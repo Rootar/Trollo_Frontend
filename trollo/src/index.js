@@ -1,20 +1,21 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './login.css';
+import './index.css';
 
-class SignIn extends React.Component
+class MainPage extends React.Component
 {
 	render()
 	{
 		return (
-			<div className="signIn">
-				
-			</div>
+		<div className="mainPage">
+			
+		</div>
 		);
 	}
 }
 
+
 ReactDOM.render(
-	<SignIn />,
+	<MainPage />,
 	document.getElementById('root')
 );
