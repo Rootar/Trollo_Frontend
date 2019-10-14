@@ -59,3 +59,28 @@ typings/
 
 # next.js build output
 .next
+
+
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+# dependencies
+./trollo/node_modules
+./trollo/.pnp
+./trollo.pnp.js
+
+# testing
+./trollo/coverage
+
+# production
+./trollo/build
+
+# misc
+./trollo/DS_Store
+./trollo/env.local
+./trollo/env.development.local
+./trollo/env.test.local
+./trollo/env.production.local
+
+./trollo/npm-debug.log*
+./trollo/yarn-debug.log*
+./trollo/yarn-error.log*
