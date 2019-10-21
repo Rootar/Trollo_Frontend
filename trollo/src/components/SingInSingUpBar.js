@@ -31,17 +31,17 @@ const SingInSingUpBar = () => {
 						<Button
 							variant = "contained"
 							className = { Styles.button }
-							color = "primary"
 						>
-							Sing in
+							Sing up
 						</Button>
 					</Box>
 					<Box p={1} className = { Styles.boxSpace }>
 						<Button
 							variant = "contained"
 							className = { Styles.button }
+							color = "primary"
 						>
-							Sing up
+							Sing in
 						</Button>
 					</Box>
 				</Box>
