@@ -4,6 +4,7 @@ import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import Paper from '@material-ui/core/Paper';
 import { makeStyles } from '@material-ui/core/styles';
+import { Button } from "@material-ui/core";
 
 const Stylesx = makeStyles(theme => ({
     root: {
@@ -30,6 +31,9 @@ const List = () => {
             <Grid item>
                 <Paper className={Styles.paper}>"sdasdagassshuasd"</Paper>                
             </Grid>
+            <Button variant="contained" color="primary">
+                Primary
+            </Button>
         </Grid>
     )
 }
