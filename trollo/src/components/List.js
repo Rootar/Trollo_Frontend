@@ -9,12 +9,12 @@ import { Button } from "@material-ui/core";
 const Stylesx = makeStyles(theme => ({
     root: {
         flexGrow: 1,
-      },
-      paper: {
+    },
+    paper: {
         padding: theme.spacing(2),
         textAlign: 'center',
         color: theme.palette.text.secondary,
-      },
+    },
 }));
 
 const List = () => {

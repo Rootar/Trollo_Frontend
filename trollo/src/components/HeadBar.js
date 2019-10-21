@@ -1,8 +1,4 @@
 import React from "react"
-
-import Grid from "@material-ui/core/Grid";
-import Typography from "@material-ui/core/Typography";
-import Paper from '@material-ui/core/Paper';
 import { fade, makeStyles } from '@material-ui/core/styles';
 import { Button } from "@material-ui/core";
 import AppBar from '@material-ui/core/AppBar';
@@ -13,14 +9,6 @@ import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 
 const Stylesx = makeStyles(theme => ({
-    root: {
-        flexGrow: 1,
-    },
-    paper: {
-        padding: theme.spacing(2),
-        textAlign: 'center',
-        color: theme.palette.text.secondary,
-    },
     menuButton: {
         marginRight: theme.spacing(2),
     },
