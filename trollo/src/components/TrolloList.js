@@ -14,13 +14,24 @@ const Stylesx = makeStyles(theme => ({
 	},
 }));
 
-const TrolloList = () => {
+const TrolloList = ({ title }) => {
 	const Styles = Stylesx();
 
 	return (
 		<div className={ Styles.root }>
 			<List component="nav" aria-label="main mailbox folders">
-				<ListItemText primary="Inbox" />
+				<ListItemText>
+					{ title }
+				</ListItemText>
+				<ListItem button>
+					<TrolloCard></TrolloCard>
+				</ListItem>
+				<ListItem button>
+					<TrolloCard></TrolloCard>
+				</ListItem>
+				<ListItem button>
+					<TrolloCard></TrolloCard>
+				</ListItem>
 				<ListItem button>
 					<TrolloCard></TrolloCard>
 				</ListItem>

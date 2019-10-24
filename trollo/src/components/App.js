@@ -13,7 +13,7 @@ function App() {
       <br/> */}
       <HeadBar/>
       {/* <SingIn/> */}
-      <TrolloList/>
+      <TrolloList title = "test title"/>
     </div>
   );
 }
