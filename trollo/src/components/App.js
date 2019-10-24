@@ -6,6 +6,8 @@ import SingIn from "./SingIn";
 import TrolloList from "./TrolloList";
 import TrolloCard from "./TrolloCard";
 
+import { connect } from 'react-redux';
+
 function App() {
   return (
     <div className="App">
@@ -18,4 +20,9 @@ function App() {
   );
 }
 
+const mapStateProps = state => ({
+  lists: state.lists
+});
+
+//export default connect(mapStateProps)(App);
 export default App;
