@@ -5,7 +5,7 @@ import TextField from '@material-ui/core/TextField';
 import { Button } from "@material-ui/core";
 import Grid from '@material-ui/core/Grid';
 
-const Stylesx = makeStyles(theme => ({
+const Styles = makeStyles(theme => ({
 	container: {
 		margin: theme.spacing(2),
 		display: 'flex',
@@ -29,11 +29,11 @@ const Stylesx = makeStyles(theme => ({
 	},
 }));
 
-const SingIn = () => {
-	const Styles = Stylesx();
+const SignIn = () => {
+	const styles = Styles();
 
 	return (
-		<form className = { Styles.container }>
+		<form className = { styles.container }>
 			<Grid
 				container
 				direction="column"
@@ -41,12 +41,12 @@ const SingIn = () => {
 				alignItems="center"
 			>	
 				<div
-					className = { Styles.loginLabel }
+					className = { styles.loginLabel }
 				>
 					Log in to Trollo
 				</div>
 				<Button
-					className = { Styles.button}
+					className = { styles.button}
 					color="primary"
 				>
 					or create an account
@@ -54,19 +54,19 @@ const SingIn = () => {
 		
 				<TextField
 					id = "mail"
-					className = { Styles.textField }
+					className = { styles.textField }
 					label = "E-mail"
 				></TextField>
 
 				<TextField
 					id = "pass"
-					className = { Styles.textField }
+					className = { styles.textField }
 					label = "Password"
 					type="password"
 				></TextField>
 
 				<Button
-					className = { Styles.button}
+					className = { styles.button}
 					variant="contained"
 					color="primary"
 				>
@@ -76,4 +76,4 @@ const SingIn = () => {
 	);
 }
 
-export default SingIn;
+export default SignIn;

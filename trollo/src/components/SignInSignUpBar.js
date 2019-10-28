@@ -5,7 +5,7 @@ import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Box from '@material-ui/core/Box';
 
-const Stylesx = makeStyles(theme => ({
+const Styles = makeStyles(theme => ({
     button: {
 		margin: theme.spacing(1),
 	},
@@ -15,8 +15,8 @@ const Stylesx = makeStyles(theme => ({
 	},
 }));
 
-const SingInSingUpBar = () => {
-    const Styles = Stylesx();
+const SignInSignUpBar = () => {
+    const styles = Styles();
 
     return (
         <AppBar position="static">
@@ -25,23 +25,23 @@ const SingInSingUpBar = () => {
 					display="flex"
 					flexDirection="row-reverse"
 					p={1} m={1}
-					className = { Styles.boxSpace }
+					className = { styles.boxSpace }
 				>
-					<Box p={1} className = { Styles.boxSpace }>
+					<Box p={1} className = { styles.boxSpace }>
 						<Button
 							variant = "contained"
-							className = { Styles.button }
+							className = { styles.button }
 						>
 							Sing up
 						</Button>
 					</Box>
-					<Box p={1} className = { Styles.boxSpace }>
+					<Box p={1} className = { styles.boxSpace }>
 						<Button
 							variant = "contained"
-							className = { Styles.button }
+							className = { styles.button }
 							color = "primary"
 						>
-							Sing in
+							Sign in
 						</Button>
 					</Box>
 				</Box>
@@ -50,4 +50,4 @@ const SingInSingUpBar = () => {
 	)
 }
 
-export default SingInSingUpBar;
+export default SignInSignUpBar;

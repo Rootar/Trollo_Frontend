@@ -7,20 +7,21 @@ import CardContent from '@material-ui/core/CardContent';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 
-const Stylesx = makeStyles(theme => ({
+const Styles = makeStyles(theme => ({
 	card: {
 		minWidth: 275,
 	},
 }));
 
-const TrolloCard = () => {
-	const Styles = Stylesx();
+const TrolloCard = ({ title, description }) => {
+	const styles = Styles();
 
 	return (
-		<Card className={ Styles.card }>
+		<Card className={styles.card}>
 			<CardActions>
-				<Button size="small">Title of card</Button>
+				<Button size="small">{title}</Button>
 			</CardActions>
+			<Typography gutterBottom>{description}</Typography>
 		</Card>
 	);
 }

@@ -1,15 +1,43 @@
 const initialState = [
 	{
 		id: 0,
-		title: "default title",
+		title: "TODO",
 		cards: [
 			{
-				ids: 0,
-				description: "deafault description",
+				id: 0,
+				description: "Stworzyć lootboxy",
 			},
 			{
-				ids: 1,
-				description: "deafault description 2",
+				id: 1,
+				description: "Przygotować game design document",
+			}
+		]
+	},
+	{
+		id: 1,
+		title: "IN PROGRESS",
+		cards: [
+			{
+				id: 0,
+				description: "Posegregować nazwy, żeby numeracja zgadzała się z poziomem",
+			},
+			{
+				id: 1,
+				description: "Zrobić system ekwipunku",
+			}
+		]
+	},
+	{
+		id: 2,
+		title: "DONE",
+		cards: [
+			{
+				id: 0,
+				description: "Przygotować 81 modeli broni",
+			},
+			{
+				id: 1,
+				description: "Uruchomić testowe reklamy na urządzeniu",
 			}
 		]
 	}
