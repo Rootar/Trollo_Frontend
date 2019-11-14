@@ -6,11 +6,18 @@ import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
+import CardActionArea from '@material-ui/core/CardActionArea';
 
 const Styles = makeStyles(theme => ({
 	card: {
 		minWidth: 275,
 	},
+	typo:{		
+		marginTop: 15,
+		marginBottom: 15,
+		marginLeft: 10,
+		marginRight: 10
+	}
 }));
 
 const TrolloCard = ({ title, description }) => {
@@ -18,10 +25,9 @@ const TrolloCard = ({ title, description }) => {
 
 	return (
 		<Card className={styles.card}>
-			<CardActions>
-				<Button size="small">{title}</Button>
-			</CardActions>
-			<Typography gutterBottom>{description}</Typography>
+			<CardActionArea>
+				<Typography className={styles.typo} gutterBottom>{description}</Typography>
+			</CardActionArea>
 		</Card>
 	);
 }
