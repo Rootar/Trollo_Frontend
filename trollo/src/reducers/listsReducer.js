@@ -5,11 +5,13 @@ const initialState = [
 		cards: [
 			{
 				id: 0,
-				description: "Stworzyć lootboxy",
+				name: "Stworzyć lootboxy",
+				description: "System lootboxów ma być bajerancki",
 			},
 			{
 				id: 1,
-				description: "Przygotować game design document",
+				name: "Przygotować game design document",
+				description: "System lootboxów ma być bajerancki",
 			}
 		]
 	},
@@ -19,11 +21,13 @@ const initialState = [
 		cards: [
 			{
 				id: 0,
-				description: "Posegregować nazwy, żeby numeracja zgadzała się z poziomem",
+				name: "Posegregować nazwy",
+				description: "Trzeba posegregować nazwy, żeby numeracja zgadzała się z poziomem",
 			},
 			{
 				id: 1,
-				description: "Zrobić system ekwipunku",
+				name: "Zrobić system ekwipunku",
+				description: "No bo wiadomo jest gra trzeba jakoś ułożyć przedmioty",
 			}
 		]
 	},
@@ -33,11 +37,13 @@ const initialState = [
 		cards: [
 			{
 				id: 0,
-				description: "Przygotować 81 modeli broni",
+				name: "Przygotować 81 modeli broni",
+				description: "modele jak modele",
 			},
 			{
 				id: 1,
-				description: "Uruchomić testowe reklamy na urządzeniu",
+				name: "Uruchomić testowe reklamy na urządzeniu",
+				description: "Pamiętać o usunięciu reklam +18",
 			}
 		]
 	}
