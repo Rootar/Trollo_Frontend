@@ -65,6 +65,13 @@ const SignUp = () => {
 					type="password"
 				></TextField>
 
+				<TextField
+					id = "reppass"
+					className = { styles.textField }
+					label = "Repeat Password"
+					type="password"
+				></TextField>
+
 				<Button
 					className = { styles.button}
 					variant="contained"

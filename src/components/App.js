@@ -1,10 +1,7 @@
 import React, { Component } from 'react';
-import HeadBar from "./HeadBar";
-import SignInSignUpBar from './SignInSignUpBar';
-import SignIn from "./SignIn";
-import TrolloList from "./TrolloList";
-import TrolloCard from "./TrolloCard";
-import Grid from '@material-ui/core/Grid';
+import TrolloBoard from './TrolloBoard';
+import Login from './Login';
+import Register from './Register';
 
 import { connect } from 'react-redux';
 
@@ -14,17 +11,10 @@ class App extends Component {
 
     return (
       <div className="App">
-        {/* <SignInSignUpBar/><br/> */}
-        {/*<HeadBar />*/}
-        {/* <SignIn/> */}
-        <Grid container justify="center" spacing="2">
-          {lists.map(list =>
-            <Grid item>
-              <TrolloList title={list.title} cards={list.cards} />
-            </Grid>
-          )}
-        </Grid>
-
+        {/*<TrolloBoard lists={lists}/>*/}
+        {/*<Login/>*/}
+        {/*<Register/>*/}
+        <TrolloBoard lists={lists}/>
       </div>
     );
   }
