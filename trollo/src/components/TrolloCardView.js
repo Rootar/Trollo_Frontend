@@ -6,6 +6,7 @@ import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import { Card } from "@material-ui/core";
+import CardContent from '@material-ui/core/CardContent';
 import ListSubheader from '@material-ui/core/ListSubheader';
 
 const Styles = makeStyles(theme => ({
@@ -17,15 +18,24 @@ const Styles = makeStyles(theme => ({
 	},
 }));
 
-const TrolloList = ({ key, title, cards }) => {
+const TrolloCardView = ({ cardIndex, cards }) => {
 	const styles = Styles();
 
 	return (
-		<List className={styles.list} component="nav" aria-label="main mailbox folders">
-			<ListSubheader align='center'>
-				{title}
-			</ListSubheader>
+		<Card className={styles.card}>
+			<CardContent>
+				<Typography className={classes.title} color="textSecondary" gutterBottom>
 
+					{cards.map(card => (
+						<ListItem button>
+							<TrolloCard name={card.name}></TrolloCard>
+						</ListItem>
+					))}
+				</Typography>
+			</CardContent>
+		</Card>
+
+		<List className={styles.list} component="nav" aria-label="main mailbox folders">
 			{cards.map(card => (
 				<ListItem button>
 					<TrolloCard name={card.name}></TrolloCard>
@@ -35,4 +45,4 @@ const TrolloList = ({ key, title, cards }) => {
 	);
 }
 
-export default TrolloList;
+export default TrolloCardView;

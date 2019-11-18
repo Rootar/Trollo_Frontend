@@ -20,13 +20,13 @@ const Styles = makeStyles(theme => ({
 	}
 }));
 
-const TrolloCard = ({ description }) => {
+const TrolloCard = ({ name }) => {
 	const styles = Styles();
 
 	return (
 		<Card className={styles.card}>
 			<CardActionArea>
-				<Typography className={styles.typo} gutterBottom>{description}</Typography>
+				<Typography className={styles.typo} gutterBottom>{name}</Typography>
 			</CardActionArea>
 		</Card>
 	);
