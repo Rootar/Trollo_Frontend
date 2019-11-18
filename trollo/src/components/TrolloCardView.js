@@ -22,7 +22,7 @@ const TrolloCardView = ({ cardIndex, cards }) => {
 	const styles = Styles();
 
 	return (
-		<Card className={styles.card}>
+		{/*<Card className={styles.card}>
 			<CardContent>
 				<Typography className={classes.title} color="textSecondary" gutterBottom>
 
@@ -41,7 +41,7 @@ const TrolloCardView = ({ cardIndex, cards }) => {
 					<TrolloCard name={card.name}></TrolloCard>
 				</ListItem>
 			))}
-		</List>
+			</List>*/}
 	);
 }
 
