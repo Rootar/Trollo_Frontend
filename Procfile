@@ -1,1 +1,1 @@
-web: node trollo/
+web: node src/index.js
