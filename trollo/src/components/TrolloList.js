@@ -28,7 +28,7 @@ const TrolloList = ({ title, cards }) => {
 
 			{cards.map(card => (
 				<ListItem button>
-					<TrolloCard title={card.title} description={card.description}></TrolloCard>
+					<TrolloCard description={card.description}></TrolloCard>
 				</ListItem>
 			))}
 		</List>

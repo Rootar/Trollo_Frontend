@@ -20,7 +20,7 @@ const Styles = makeStyles(theme => ({
 	}
 }));
 
-const TrolloCard = ({ title, description }) => {
+const TrolloCard = ({ description }) => {
 	const styles = Styles();
 
 	return (
