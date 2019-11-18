@@ -7,6 +7,7 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import { Card } from "@material-ui/core";
 import ListSubheader from '@material-ui/core/ListSubheader';
+import TrolloAddButton from "./TrolloAddButton";
 
 const Styles = makeStyles(theme => ({
 	list: {
@@ -28,9 +29,11 @@ const TrolloList = ({ title, cards }) => {
 
 			{cards.map(card => (
 				<ListItem button>
-					<TrolloCard description={card.description}></TrolloCard>
+					<TrolloCard name={card.name}></TrolloCard>
 				</ListItem>
 			))}
+
+			<TrolloAddButton/>
 		</List>
 	);
 }

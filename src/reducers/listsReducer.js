@@ -5,10 +5,12 @@ const initialState = [
 		cards: [
 			{
 				id: 0,
+				name: "Stworzyć lootboxy",
 				description: "Stworzyć lootboxy",
 			},
 			{
 				id: 1,
+				name: "Przygotować GDD",
 				description: "Przygotować game design document",
 			}
 		]
@@ -19,11 +21,13 @@ const initialState = [
 		cards: [
 			{
 				id: 0,
+				name: "Posegregować nazwy",
 				description: "Posegregować nazwy, żeby numeracja zgadzała się z poziomem",
 			},
 			{
 				id: 1,
-				description: "Zrobić system ekwipunku",
+				name: "Zrobić system ekwipunku",
+				description: "no bo jak to tak bez torby",
 			}
 		]
 	},
@@ -33,11 +37,13 @@ const initialState = [
 		cards: [
 			{
 				id: 0,
-				description: "Przygotować 81 modeli broni",
+				name: "Przygotować 81 modeli broni",
+				description: "Przygotować 81 modeli broni żeby był jakiś content",
 			},
 			{
 				id: 1,
-				description: "Uruchomić testowe reklamy na urządzeniu",
+				name: "Uruchomić testowe reklamy",
+				description: "Uruchomić testowe reklamy na urządzeniu tylko bez takich +18",
 			}
 		]
 	}

@@ -3,6 +3,7 @@ import HeadBar from "./HeadBar";
 import TrolloList from "./TrolloList";
 import TrolloCard from "./TrolloCard";
 import Grid from '@material-ui/core/Grid';
+import TrolloAddButton from "./TrolloAddButton";
 
 import { makeStyles } from '@material-ui/core/styles';
 import { connect } from 'react-redux';
@@ -21,11 +22,12 @@ const TrolloBoard = ({lists}) => {
 			<HeadBar />
 			<br/>
 			<Grid className={styles.container} container justify="left" spacing="2">
-			{lists.map(list =>
-				<Grid item>
-					<TrolloList title={list.title} cards={list.cards} />
-				</Grid>
-			)}
+				{lists.map(list =>
+					<Grid item>
+						<TrolloList title={list.title} cards={list.cards} />
+					</Grid>
+				)}
+			<TrolloAddButton list/>
 			</Grid>
 
 		</div>
