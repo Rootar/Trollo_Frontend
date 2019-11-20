@@ -1,10 +1,10 @@
-export const constant = {
-	LOGIN: "LOGIN",
-	REGISTER: "REGISTER",
-	CREATE_BOARD: "CREATE_BOARD",
-	ADD_LIST: "ADD_LIST",
-	ADD_CARD: "ADD_CARD",
-	NAME_BOARD: "NAME_BOARD",
-	NAME_LIST: "NAME_LIST",
-	NAME_CARD: "NAME_CARD",
+export const actions = {
+	login: "login",
+	register: "register",
+	addBoard: "addBoard",
+	addList: "addList",
+	addCard: "addCard",
+	nameBoard: "nameBoard",
+	nameList: "nameList",
+	nameCard: "nameCard",
 };
