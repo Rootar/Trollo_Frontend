@@ -4,6 +4,9 @@ import Card from '@material-ui/core/Card';
 import Textarea from '@material-ui/core/TextareaAutosize';
 import { Icon, Button } from "@material-ui/core";
 
+import { connect } from "react-redux";
+import { AddList, AddCard } from "../actions";
+
 const styles =
 {
 	addButton: {
@@ -71,7 +74,11 @@ class TrolloAddButton extends React.Component {
 					</Textarea>
 				</Card>
 				<div style = { styles.addAceptCancel }>
-					<Button variant = "contained" color = "primary"> { addbuttonText } </Button>
+					<Button
+						variant = "contained"
+						color = "primary"
+						onMouseDown = { list ? this.AddTrolloList : this.AddTrolloCard }
+					> { addbuttonText } </Button>
 					<Icon style = { styles.xButton }> close </Icon>
 				</div>
 			</div>
@@ -94,6 +101,30 @@ class TrolloAddButton extends React.Component {
 	ChangeName = evt => {
 		this.setState({name: evt.target.value});
 	};
+
+	AddTrolloList = () => {
+		const { dispatch } = this.props;
+		const { name } = this.state;
+
+		if(name)
+		{
+			this.setState({name: ""});
+			dispatch(AddList(name))
+		}
+		return;
+	}
+
+	AddTrolloCard = () => {
+		const { dispatch, listId } = this.props;
+		const { name } = this.state;
+
+		if(name)
+		{
+			this.setState({name: ""});
+			dispatch(AddCard(listId, name))
+		}
+		return;
+	}
 }
 
-export default TrolloAddButton;
+export default connect()(TrolloAddButton);

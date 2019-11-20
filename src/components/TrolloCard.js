@@ -9,26 +9,20 @@ import Typography from '@material-ui/core/Typography';
 import CardActionArea from '@material-ui/core/CardActionArea';
 
 const Styles = makeStyles(theme => ({
-	card: {
-		minWidth: 275,
-		minHeight: 80,
-	},
-	typo:{		
-		marginTop: 15,
-		marginBottom: 15,
-		marginLeft: 10,
-		marginRight: 10
+	trollocard: {
+		marginBottom: "1px",
+		minWidth: 260,
 	}
 }));
 
 const TrolloCard = ({ name }) => {
-	const styles = Styles();
+	const stylesx = Styles();
 
 	return (
-		<Card className={styles.card}>
-			<CardActionArea>
-				<Typography className={styles.typo} gutterBottom>{name}</Typography>
-			</CardActionArea>
+		<Card className = {stylesx.trollocard}>
+			<CardContent>
+				<Typography gutterBottom> {name} </Typography>
+			</CardContent>
 		</Card>
 	);
 }

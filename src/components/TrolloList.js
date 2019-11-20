@@ -11,15 +11,15 @@ import TrolloAddButton from "./TrolloAddButton";
 
 const Styles = makeStyles(theme => ({
 	list: {
-		width: '100%',
-		maxWidth: 300,
-		backgroundColor: '#c5cae9',
-		borderRadius: '5px',
+		height: '100%',
+		width: '300px',
+		borderRadius: '3px',
 		marginRight: "8px",
+		backgroundColor: "#dcdcdc",
 	},
 }));
 
-const TrolloList = ({ title, cards }) => {
+const TrolloList = ({ listId, title, cards }) => {
 	const styles = Styles();
 
 	return (
@@ -34,7 +34,7 @@ const TrolloList = ({ title, cards }) => {
 				</ListItem>
 			))}
 
-			<TrolloAddButton/>
+			<TrolloAddButton listId = { listId }/>
 		</List>
 	);
 }

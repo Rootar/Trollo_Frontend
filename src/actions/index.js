@@ -1,3 +1,5 @@
+export * from "./listsAct"
+
 export const actions = {
 	login: "login",
 	register: "register",

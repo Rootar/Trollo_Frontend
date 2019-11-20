@@ -1,3 +1,8 @@
+import { actions } from "../actions"
+
+let lastId = 3;
+let lastCardId = 3;
+
 const initialState = [
 	{
 		id: 0,
@@ -12,6 +17,11 @@ const initialState = [
 				id: 1,
 				name: "Przygotować GDD",
 				description: "Przygotować game design document",
+			},
+			{
+				id: 2,
+				name: "Zrobić testowe karty",
+				description: "no takie tam karty",
 			}
 		]
 	},
@@ -52,6 +62,33 @@ const initialState = [
 const listsReducer = (state = initialState, action) => {
 	switch(action.type)
 	{
+		case actions.addList:
+			const newList = {
+				id: lastId,
+				title: action.payload,
+				cards: []
+			};
+			lastId += 1;
+			return [...state, newList]
+		case actions.addCard:
+				const newCard = {
+					id: lastCardId,
+					name: action.payload.name,
+					description: ""
+				};
+				lastCardId += 1;
+
+				const newLists = state.map(list => {
+					if(list.id == action.payload.listId)
+					{
+						return {
+							...list, cards: [...list.cards, newCard]
+						};
+					}
+					else return list;
+				});
+
+				return newLists
 		default:
 			return state;
 	}
