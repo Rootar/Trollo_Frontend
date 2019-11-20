@@ -11,6 +11,7 @@ import CardActionArea from '@material-ui/core/CardActionArea';
 const Styles = makeStyles(theme => ({
 	card: {
 		minWidth: 275,
+		minHeight: 80,
 	},
 	typo:{		
 		marginTop: 15,

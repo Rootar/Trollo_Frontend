@@ -2,23 +2,36 @@ import React from "react";
 
 import Card from '@material-ui/core/Card';
 import Textarea from '@material-ui/core/TextareaAutosize';
-import { Icon } from "@material-ui/core";
+import { Icon, Button } from "@material-ui/core";
 
 const styles =
 {
 	addButton: {
-		alignItems: "center",
 		cursor: "pointer",
 		display: "flex",
 		paddingLeft: "15px",
+		alignItems: "center",
+		minWidth: 275,
+		minHeight: 40,
 	},
 	setNameArea: {
+		minWidth: 275,
+		minHeight: 80,
 		border: "none",
 		resize: "none",
 		outline: "none",
 		overflow: "hidden",
-		width: "100%",
+		marginLeft: "15px",
 	},
+	xButton: {
+		marginLeft: "6px",
+		cursor: "pointer",
+	},
+	addAceptCancel: {
+		display: "flex",
+		marginTop: "6px",
+		alignItems: "center",
+	}
 }
 
 class TrolloAddButton extends React.Component {
@@ -34,7 +47,7 @@ class TrolloAddButton extends React.Component {
 		return (
 			<div style = { styles.addButton } onClick = { this.SetAddMode }>
 				<Icon>add</Icon>
-				<p>{ addbuttonText }</p>
+				{ addbuttonText }
 			</div>
 		);
 	};
@@ -57,6 +70,10 @@ class TrolloAddButton extends React.Component {
 					>
 					</Textarea>
 				</Card>
+				<div style = { styles.addAceptCancel }>
+					<Button variant = "contained" color = "primary"> { addbuttonText } </Button>
+					<Icon style = { styles.xButton }> close </Icon>
+				</div>
 			</div>
 		);
 	};

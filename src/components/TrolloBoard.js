@@ -10,7 +10,10 @@ import { connect } from 'react-redux';
 
 const Stylesx = makeStyles(theme => ({
 	container: {
-		marginLeft: "2px",
+		display: "flex",
+		flexDirection: "row",
+		marginLeft: "6px",
+		marginRight: "8px",
 	},
 }));
 
@@ -20,15 +23,13 @@ const TrolloBoard = ({lists}) => {
 	return (
 		<div>
 			<HeadBar />
-			<br/>
-			<Grid className={styles.container} container justify="left" spacing="2">
+			<p>nazawa tablicy</p>
+			<div className = { styles.container }  justify="left" spacing="2">
 				{lists.map(list =>
-					<Grid item>
-						<TrolloList title={list.title} cards={list.cards} />
-					</Grid>
+					<TrolloList title={list.title} cards={list.cards} />
 				)}
-			<TrolloAddButton list/>
-			</Grid>
+				<TrolloAddButton list/>
+			</div>
 
 		</div>
 	);

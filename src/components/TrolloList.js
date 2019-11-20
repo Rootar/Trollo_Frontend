@@ -14,7 +14,8 @@ const Styles = makeStyles(theme => ({
 		width: '100%',
 		maxWidth: 300,
 		backgroundColor: '#c5cae9',
-		borderRadius: '5px'
+		borderRadius: '5px',
+		marginRight: "8px",
 	},
 }));
 
