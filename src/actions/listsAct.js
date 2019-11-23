@@ -13,3 +13,10 @@ export const AddCard = (listId, name) => {
 		payload: {listId, name},
 	};
 };
+
+export const AddBoard = (name) => {
+	return {
+		type: actions.addList,
+		payload: name,
+	};
+};

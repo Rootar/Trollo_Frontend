@@ -12,9 +12,13 @@ const Stylesx = makeStyles(theme => ({
     },
     tableButton: {
         marginRight: theme.spacing(2),
+        top: "-5px",
+        width: "40px",
+        height: "40px"
     },
     appBar: {
-        
+        width:  "100%",
+        height: "50px",
     },
 }));
 
@@ -27,14 +31,6 @@ const HeadBar = () => {
             className = { Styles.appBar }
         >
             <Toolbar>
-                <IconButton
-                    edge = "start"
-                    className = { Styles.menuButton }
-                    color = "inherit"
-                    aria-label = "open drawer"
-                >
-                    <MenuIcon />
-                </IconButton>
                 <IconButton
                     edge = "start"
                     className = { Styles.tableButton }
