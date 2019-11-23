@@ -4,6 +4,7 @@ import TrolloList from "./TrolloList";
 import TrolloCard from "./TrolloCard";
 import Grid from '@material-ui/core/Grid';
 import TrolloAddButton from "./TrolloAddButton";
+import TrolloCardView from "./TrolloCardView";
 
 import { makeStyles } from '@material-ui/core/styles';
 import { connect } from 'react-redux';
@@ -31,6 +32,7 @@ const TrolloBoard = ({lists}) => {
 				)}
 				<TrolloAddButton list/>
 			</div>
+			<TrolloCardView lists = {lists} listId = { 1 } cardId = { 0 } />
 
 		</div>
 	);

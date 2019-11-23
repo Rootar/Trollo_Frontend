@@ -10,38 +10,41 @@ import CardContent from '@material-ui/core/CardContent';
 import ListSubheader from '@material-ui/core/ListSubheader';
 
 const Styles = makeStyles(theme => ({
-	list: {
-		width: '100%',
+	cardView: {
+		width: '300px',
 		maxWidth: 300,
-		backgroundColor: '#c5cae9',
-		borderRadius: '5px'
+		height: "400px",
+		backgroundColor: "#c5cae9",
+		borderRadius: "5px",
+		position: "fixed",
+		margin: "auto"
 	},
 }));
 
-const TrolloCardView = ({ cardIndex, cards }) => {
+const TrolloCardView = ({ lists, listId, cardId }) => {
 	const styles = Styles();
 
 	return (
-		{/*<Card className={styles.card}>
-			<CardContent>
-				<Typography className={classes.title} color="textSecondary" gutterBottom>
+		<div>
+			{lists.map(list => {
+				if(list.id == listId) {
+					list.cards.map(card => {
+						if(card.id == cardId)
+						{
+							return (
+							<div className = {styles.cardView}>
+								<h3> { card.name } </h3>
+								<p> { card.description } </p>
+							</div> )
+						}
+						else return;
 
-					{cards.map(card => (
-						<ListItem button>
-							<TrolloCard name={card.name}></TrolloCard>
-						</ListItem>
-					))}
-				</Typography>
-			</CardContent>
-		</Card>
-
-		<List className={styles.list} component="nav" aria-label="main mailbox folders">
-			{cards.map(card => (
-				<ListItem button>
-					<TrolloCard name={card.name}></TrolloCard>
-				</ListItem>
-			))}
-			</List>*/}
+						}
+					)}
+				}
+			)}
+			
+		</div>
 	);
 }
 
