@@ -17,7 +17,7 @@ const initialState = [
 	},
 	{
 		id: 1,
-		title: "bo 2",
+		name: "bo 2",
 		users: [
 			{
 				id: 0,
@@ -26,11 +26,10 @@ const initialState = [
 				id: 2,
 			}
 		]
-	}
-	,
+	},
 	{
 		id: 2,
-		title: "jakieś coś",
+		name: "jakieś coś",
 		users: [
 			{
 				id: 0,

@@ -33,11 +33,11 @@ const TrolloBoardsList = ({ boards }) => {
 			<ListSubheader align='center'>
 				Board
 			</ListSubheader>
-				{boards.map(board => (
+				{boards.map(board => 
 					<ListItem button>
 						<TrolloBoardCard name = { board.name }></TrolloBoardCard>
 					</ListItem>
-				))}
+				)}
 			</List>
 		</div>
 		
