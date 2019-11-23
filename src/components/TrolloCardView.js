@@ -12,38 +12,23 @@ import ListSubheader from '@material-ui/core/ListSubheader';
 const Styles = makeStyles(theme => ({
 	cardView: {
 		width: '300px',
-		maxWidth: 300,
 		height: "400px",
 		backgroundColor: "#c5cae9",
 		borderRadius: "5px",
 		position: "fixed",
-		margin: "auto"
+		zIndex: "100"
 	},
 }));
 
 const TrolloCardView = ({ lists, listId, cardId }) => {
 	const styles = Styles();
+	const name = lists[listId].cards[cardId].name;
+	const description = lists[listId].cards[cardId].description;
 
 	return (
-		<div>
-			{lists.map(list => {
-				if(list.id == listId) {
-					list.cards.map(card => {
-						if(card.id == cardId)
-						{
-							return (
-							<div className = {styles.cardView}>
-								<h3> { card.name } </h3>
-								<p> { card.description } </p>
-							</div> )
-						}
-						else return;
-
-						}
-					)}
-				}
-			)}
-			
+		<div className = {styles.cardView}>
+			<h3> { name } </h3>
+			<p> { description } </p>
 		</div>
 	);
 }

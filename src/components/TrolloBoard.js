@@ -32,8 +32,6 @@ const TrolloBoard = ({lists}) => {
 				)}
 				<TrolloAddButton list/>
 			</div>
-			<TrolloCardView lists = {lists} listId = { 1 } cardId = { 0 } />
-
 		</div>
 	);
 }

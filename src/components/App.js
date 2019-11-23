@@ -3,6 +3,7 @@ import TrolloBoard from './TrolloBoard';
 import TrolloBoardsList from './TrolloBoardsList';
 import Login from './Login';
 import Register from './Register';
+import TrolloCardView from "./TrolloCardView";
 
 import { connect } from 'react-redux';
 
@@ -18,6 +19,7 @@ class App extends Component {
         {/*<Register/>*/}
         <TrolloBoard lists = { lists }/>
         <TrolloBoardsList boards = { boards }/>
+        <TrolloCardView lists = {lists} listId = { 1 } cardId = { 0 } />
       </div>
     );
   }
