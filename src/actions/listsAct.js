@@ -16,7 +16,7 @@ export const AddCard = (listId, name) => {
 
 export const AddBoard = (name) => {
 	return {
-		type: actions.addList,
+		type: actions.addBoard,
 		payload: name,
 	};
 };

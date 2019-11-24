@@ -5,7 +5,7 @@ import Textarea from '@material-ui/core/TextareaAutosize';
 import { Icon, Button } from "@material-ui/core";
 
 import { connect } from "react-redux";
-import { AddList, AddCard } from "../actions";
+import { AddList, AddCard, AddBoard } from "../actions";
 
 const styles =
 {
@@ -45,7 +45,8 @@ class TrolloAddButton extends React.Component {
 
 	RenderButton = () => {
 		const { list } = this.props;
-		const addbuttonText = list ? "Add list" : "Add card";
+		const { board } = this.props;
+		const addbuttonText = list ? "Add list" : board ? "Add board" : "Add card";
 
 		return (
 			<div style = { styles.addButton } onClick = { this.SetAddMode }>
@@ -57,8 +58,9 @@ class TrolloAddButton extends React.Component {
 
 	RenderAddMode = () => {
 		const { list } = this.props;
-		const addbuttonText = list ? "Add list" : "Add card";
-		const addModePlaceholder = list ? "Enter list name..." : "Enter card name...";
+		const { board } = this.props;
+		const addbuttonText = list ? "Add list" : board ? "Add board" : "Add card";
+		const addModePlaceholder = list ? "Enter list name..." : board ? "Enter board name..." : "Enter card name...";
 
 		return (
 			<div>
@@ -77,7 +79,7 @@ class TrolloAddButton extends React.Component {
 					<Button
 						variant = "contained"
 						color = "primary"
-						onMouseDown = { list ? this.AddTrolloList : this.AddTrolloCard }
+						onMouseDown = { list ? this.AddTrolloList : board ? this.AddTrolloBoard : this.AddTrolloCard }
 					> { addbuttonText } </Button>
 					<Icon style = { styles.xButton }> close </Icon>
 				</div>
@@ -122,6 +124,18 @@ class TrolloAddButton extends React.Component {
 		{
 			this.setState({name: ""});
 			dispatch(AddCard(listId, name))
+		}
+		return;
+	}
+
+	AddTrolloBoard = () => {
+		const { dispatch } = this.props;
+		const { name } = this.state;
+
+		if(name)
+		{
+			this.setState({name: ""});
+			dispatch(AddBoard(name))
 		}
 		return;
 	}

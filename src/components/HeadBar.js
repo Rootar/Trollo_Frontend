@@ -5,6 +5,7 @@ import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 import TableChartOutlinedIcon from '@material-ui/icons/TableChartOutlined';
+import { Button } from "@material-ui/core";
 
 const Stylesx = makeStyles(theme => ({
     menuButton: {
@@ -20,6 +21,11 @@ const Stylesx = makeStyles(theme => ({
         width:  "100%",
         height: "50px",
     },
+    logoutButton: {
+        top: "5px",
+        position: 'absolute',
+        right: '20px',
+    }
 }));
 
 const HeadBar = () => {
@@ -39,6 +45,14 @@ const HeadBar = () => {
                 >
                     <TableChartOutlinedIcon />
                 </IconButton>
+
+                <Button
+                    variant = "contained"
+                    color = "primary"
+                    className = { Styles.logoutButton }
+                >
+                    Logout
+                </Button>
             </Toolbar>
         </AppBar>
     )

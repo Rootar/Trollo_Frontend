@@ -8,6 +8,8 @@ import TrolloCardView from "./TrolloCardView";
 
 import { makeStyles } from '@material-ui/core/styles';
 import { connect } from 'react-redux';
+import { Icon, Button } from "@material-ui/core";
+import IconButton from '@material-ui/core/IconButton';
 
 const Stylesx = makeStyles(theme => ({
 	trolloList: {
@@ -17,15 +19,33 @@ const Stylesx = makeStyles(theme => ({
 		marginRight: "6px",
 		maxwidth: "300px",
 	},
+	boardNameRow: {
+		display: "flex",
+		flexDirection: "row",
+	},
+	boardName: {
+		marginRight: theme.spacing(2),
+		marginLeft: theme.spacing(2),
+	}
 }));
 
-const TrolloBoard = ({lists}) => {
+const TrolloBoard = ({boards, boardId, lists}) => {
 	const styles = Stylesx();
+	const boardName = boards[boardId].name;
 	
 	return (
 		<div>
 			<HeadBar />
-			<p>nazawa tablicy</p>
+			<div className = {styles.boardNameRow}>
+				<p className = {styles.boardName}> {boardName}</p>
+				<IconButton
+					edge = "start"
+					color = "inherit"
+					aria-label = "open drawer"
+				>
+						<Icon className = { styles.editIcon }> edit </Icon>
+				</IconButton>
+			</div>
 			<div className = { styles.trolloList }>
 				{lists.map(list =>
 					<TrolloList listId = { list.id } title = { list.title } cards={ list.cards } />
