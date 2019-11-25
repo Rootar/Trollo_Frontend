@@ -52,6 +52,16 @@ const boardsReducer = (state = initialState, action) => {
 			};
 			lastId += 1;
 			return [...state, newBoard]
+		case actions.nameBoard:
+			for(var i = 0; i < state.length; ++i)
+			{
+				if(state[i].id == action.payload.boardId)
+				{
+					state[i].name = action.payload.name;
+					break;
+				}
+			}
+			return state;
 		default:
 			return state;
 	}

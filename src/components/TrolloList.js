@@ -8,6 +8,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import { Card } from "@material-ui/core";
 import ListSubheader from '@material-ui/core/ListSubheader';
 import TrolloAddButton from "./TrolloAddButton";
+import TrolloEditName from "./TrolloEditName";
 
 const Styles = makeStyles(theme => ({
 	list: {
@@ -24,9 +25,10 @@ const TrolloList = ({ listId, title, cards }) => {
 
 	return (
 		<List className={styles.list} component="nav" aria-label="main mailbox folders">
-			<ListSubheader align='center'>
+			<TrolloEditName name = { title } list/>
+			{/* <ListSubheader align='center'>
 				{title}
-			</ListSubheader>
+			</ListSubheader> */}
 
 			{cards.map(card => (
 				<ListItem button>

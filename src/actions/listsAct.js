@@ -1,5 +1,12 @@
 import { actions } from "../actions"
 
+export const AddBoard = (name) => {
+	return {
+		type: actions.addBoard,
+		payload: name,
+	};
+};
+
 export const AddList = (title) => {
 	return {
 		type: actions.addList,
@@ -14,9 +21,23 @@ export const AddCard = (listId, name) => {
 	};
 };
 
-export const AddBoard = (name) => {
+export const SetBoardName = (boardId, name) => {
 	return {
-		type: actions.addBoard,
-		payload: name,
+		type: actions.nameBoard,
+		payload: {boardId, name},
+	};
+};
+
+export const SetListName = (listId, title) => {
+	return {
+		type: actions.nameList,
+		payload: {listId, title},
+	};
+};
+
+export const SetCardName = (boardId, listId, name) => {
+	return {
+		type: actions.nameCard,
+		payload: {boardId, listId, name},
 	};
 };

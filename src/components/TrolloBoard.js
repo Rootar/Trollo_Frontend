@@ -4,6 +4,7 @@ import TrolloList from "./TrolloList";
 import TrolloCard from "./TrolloCard";
 import Grid from '@material-ui/core/Grid';
 import TrolloAddButton from "./TrolloAddButton";
+import TrolloEditName from "./TrolloEditName";
 import TrolloCardView from "./TrolloCardView";
 
 import { makeStyles } from '@material-ui/core/styles';
@@ -36,16 +37,7 @@ const TrolloBoard = ({boards, boardId, lists}) => {
 	return (
 		<div>
 			<HeadBar />
-			<div className = {styles.boardNameRow}>
-				<p className = {styles.boardName}> {boardName}</p>
-				<IconButton
-					edge = "start"
-					color = "inherit"
-					aria-label = "open drawer"
-				>
-						<Icon className = { styles.editIcon }> edit </Icon>
-				</IconButton>
-			</div>
+			<TrolloEditName name = { boardName } board/>
 			<div className = { styles.trolloList }>
 				{lists.map(list =>
 					<TrolloList listId = { list.id } title = { list.title } cards={ list.cards } />

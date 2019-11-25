@@ -3,9 +3,10 @@ import React from "react";
 import Card from '@material-ui/core/Card';
 import Textarea from '@material-ui/core/TextareaAutosize';
 import { Icon, Button } from "@material-ui/core";
+import IconButton from '@material-ui/core/IconButton';
 
 import { connect } from "react-redux";
-import { AddList, AddCard, AddBoard } from "../actions";
+import { SetBoardName, SetListName, SetCardName } from "../actions";
 
 const styles =
 {
@@ -34,40 +35,20 @@ const styles =
 		display: "flex",
 		marginTop: "6px",
 		alignItems: "center",
-	},
-	boardNameRow: {
-		display: "flex",
-		flexDirection: "row",
-	},
-	boardName: {
-		marginRight: "2px",
-		marginLeft: "2px",
 	}
 }
 
-class TrolloAddButton extends React.Component {
+class TrolloEditName extends React.Component {
 	state = {
 		addMode: false,
-		name: "",
+		name: this.props.name,
 	};
 
-	RenderButton = () => {
+
+	RenderEditMode = () => {
 		const { list } = this.props;
 		const { board } = this.props;
-		const addbuttonText = list ? "Add list" : board ? "Add board" : "Add card";
-
-		return (
-			<div style = { styles.addButton } onClick = { this.SetAddMode }>
-				<Icon>add</Icon>
-				{ addbuttonText }
-			</div>
-		);
-	};
-
-	RenderAddMode = () => {
-		const { list } = this.props;
-		const { board } = this.props;
-		const addbuttonText = list ? "Add list" : board ? "Add board" : "Add card";
+		const addbuttonText = "SAVE";
 		const addModePlaceholder = list ? "Enter list name..." : board ? "Enter board name..." : "Enter card name...";
 
 		return (
@@ -87,7 +68,7 @@ class TrolloAddButton extends React.Component {
 					<Button
 						variant = "contained"
 						color = "primary"
-						onMouseDown = { list ? this.AddTrolloList : board ? this.AddTrolloBoard : this.AddTrolloCard }
+						onMouseDown = { list ? this.EditListName : board ? this.EditBoardName : this.EditCardName }
 					> { addbuttonText } </Button>
 					<Icon style = { styles.xButton }> close </Icon>
 				</div>
@@ -95,9 +76,24 @@ class TrolloAddButton extends React.Component {
 		);
 	};
 
+	RenderName = () => {
+		return (
+			<div style = { styles.addButton } onClick = { this.SetAddMode }>
+				<p style = {styles.boardName}> {this.state.name}</p>
+				<IconButton
+					edge = "start"
+					color = "inherit"
+					aria-label = "open drawer"
+				>
+						<Icon className = { styles.editIcon }> edit </Icon>
+				</IconButton>
+			</div>
+		);
+	};
+
 	render()
 	{
-		return this.state.addMode ? this.RenderAddMode() : this.RenderButton();
+		return this.state.addMode ? this.RenderEditMode() : this.RenderName();
 	};
 
 	SetAddMode = () => {
@@ -112,41 +108,42 @@ class TrolloAddButton extends React.Component {
 		this.setState({name: evt.target.value});
 	};
 
-	AddTrolloList = () => {
+	EditBoardName = () => {
 		const { dispatch } = this.props;
 		const { name } = this.state;
 
 		if(name)
 		{
-			this.setState({name: ""});
-			dispatch(AddList(name))
+			//this.setState({name: ""});
+			dispatch(SetBoardName(name))
 		}
 		return;
 	}
 
-	AddTrolloCard = () => {
+	EditListName = () => {
+		const { dispatch } = this.props;
+		const { name } = this.state;
+
+		if(name)
+		{
+			//this.setState({name: ""});
+			dispatch(SetListName(name))
+		}
+		return;
+	}
+
+	EditCardName = () => {
 		const { dispatch, listId } = this.props;
 		const { name } = this.state;
 
 		if(name)
 		{
-			this.setState({name: ""});
-			dispatch(AddCard(listId, name))
-		}
-		return;
-	}
-
-	AddTrolloBoard = () => {
-		const { dispatch } = this.props;
-		const { name } = this.state;
-
-		if(name)
-		{
-			this.setState({name: ""});
-			dispatch(AddBoard(name))
+			//this.setState({name: ""});
+			dispatch(SetCardName(listId, name))
 		}
 		return;
 	}
 }
 
-export default connect()(TrolloAddButton);
+
+export default connect()(TrolloEditName);

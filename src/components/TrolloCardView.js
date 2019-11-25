@@ -9,6 +9,7 @@ import { Card } from "@material-ui/core";
 import CardContent from '@material-ui/core/CardContent';
 import ListSubheader from '@material-ui/core/ListSubheader';
 import { Icon, Button } from "@material-ui/core";
+import TrolloEditName from "./TrolloEditName";
 
 const Styles = makeStyles(theme => ({
 	cardView: {
@@ -28,7 +29,7 @@ const TrolloCardView = ({ lists, listId, cardId }) => {
 
 	return (
 		<div className = {styles.cardView}>
-			<h3> { name } </h3>
+			<TrolloEditName name = { name }/>
 			<Icon>close</Icon>
 			<p> { description } </p>
 		</div>
