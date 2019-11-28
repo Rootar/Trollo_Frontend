@@ -7,6 +7,7 @@ import MenuIcon from '@material-ui/icons/Menu';
 import TableChartOutlinedIcon from '@material-ui/icons/TableChartOutlined';
 import { Button, TextField } from "@material-ui/core";
 import axios from "axios";
+import App from "./App";
 
 const styles = makeStyles(theme => ({
     menuButton: {
@@ -99,13 +100,15 @@ class HeadBar extends Component {
             username:'',
             password:'',
             login: sessionStorage.getItem('Token') ? true : false,
-            tableListShow:false
+            // tableListShow:false
         }
         
         this.onChange = this.onChange.bind(this);
         this.onSubmitLogin = this.onSubmitLogin.bind(this);
         this.onSubmitRegister = this.onSubmitRegister.bind(this);
         this.logout = this.logout.bind(this);
+
+        // sessionStorage.setItem('BoardMenu', 0)
     }
 
     render(){
@@ -170,7 +173,7 @@ class HeadBar extends Component {
             login: this.state.username, 
             password: this.state.password})
                 .then(function(response){
-                    console.log("RESPONSE: " + response) // dodać później info, że się zarejestrowaliśmy
+                    console.log("RESPONSE: " + response) // dodać później info, że się zarejestrowaliśmy                    
                 })
                 .catch(function(error){
                     console.log("REGISTER ERROR: " + error) // dodać później info, że błąd
@@ -180,7 +183,11 @@ class HeadBar extends Component {
     }
 
     SetTableView = () => {
-		this.setState({tableListShow: true});
+        console.log(sessionStorage.getItem('BoardMenu'))
+        if(sessionStorage.getItem('BoardMenu') == 1)
+            sessionStorage.setItem('BoardMenu', 0);
+        else
+            sessionStorage.setItem('BoardMenu', 1);
     };
 }
 
