@@ -35,7 +35,7 @@ const styles = makeStyles(theme => ({
 }));
 
 function Testing(that){
-    if(sessionStorage.getItem('Token') == null){
+    if(that.state.login == false){
         return (<form autoComplete="off" noValidate className={styles.form} >
             <TextField name="username" label="Username" value={that.state.username} onChange={that.onChange} className={styles.inputText}/>
             <TextField name="password" label="Password" value={that.state.password} onChange={that.onChange} className={styles.inputText}/>
@@ -98,7 +98,7 @@ class HeadBar extends Component {
         this.state = {
             username:'',
             password:'',
-            login:false,
+            login: sessionStorage.getItem('Token') ? true : false,
             tableListShow:false
         }
         
@@ -130,9 +130,7 @@ class HeadBar extends Component {
                 </AppBar>
             </div>
         )
-    }
-
-    
+    }    
 
     logout(e){
         sessionStorage.removeItem('Token')
@@ -153,20 +151,14 @@ class HeadBar extends Component {
             login: this.state.username, 
             password: this.state.password})
                 .then(function(response){
-                    // debugger;
-                    sessionStorage.setItem('Token', 'Bearer eyJ0eXBlIjoiSldUIiwiYWxnIjoiSFM1MTIifQ.eyJpc3MiOiJ0cmVsbG8tc2VjdXJlIiwiYXVkIjoidHJlbGxvYXBwIiwic3ViIjoidGVzdDIiLCJleHAiOjE1NzQ5OTA1Mjd9.1fhsl_f5RuN4HNOXLIMxf2HhgwPVbNvVHL1J-DAd2FIN1VCaQsqXAWG1FKhj59S4vCAOQajdIYQNT2IsmsMwYQ')
-                    // this.state.login = true
-                    // this.forceUpdate();
-                    let res = JSON.stringify(response, null, 20);
-                    console.log("LOGIN: " + res) // dodać później info, że się zalogowaliśmy
-
-                    //loadContent();
-                   // getBoards();
+                    sessionStorage.setItem('Token', response.headers['authorization']);                    
                 })
                 .catch(function(error){
                     console.log("LOGIN ERROR: " + error) // dodać później info, że błąd
                 })
         
+        this.state.login=true
+        this.forceUpdate();
     }
 
     onSubmitRegister(e){
@@ -183,6 +175,8 @@ class HeadBar extends Component {
                 .catch(function(error){
                     console.log("REGISTER ERROR: " + error) // dodać później info, że błąd
                 })
+                
+        this.forceUpdate();
     }
 
     SetTableView = () => {
