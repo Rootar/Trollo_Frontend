@@ -53,6 +53,43 @@ function loadContent(){
     axios.get('https://trollo195.herokuapp.com/boards/get')
 }
 
+function getBoards()
+{
+    let config = {
+            headers: {
+                'Authorization': 'Bearer ' + sessionStorage.getItem('Token'),
+                Accept: "*/*",
+                "Content-Type": "application/json"
+           }
+        }
+    
+        console.log(sessionStorage.getItem('Token'));
+
+        const response = axios.get({
+            URL: 'https://trollo195.herokuapp.com/boards/getBoards',
+            headers: { 'Authorization': 'Bearer ' + sessionStorage.getItem('Token'),
+            username:this.state.username}
+        } )
+        response.then((res) => {
+            const items = res.data;
+            this.setState({
+                isLoaded: false,
+                items : items,
+            });
+            console.log(this.items);
+        })
+    
+
+    // axios.get('https://trollo195.herokuapp.com/boards/getBoards',
+    //     {username:this.state.username},
+    //     config)
+    //         .then(function(response){
+    //             console.log("BOARDS: " + response.data) // 
+    //         })
+    //         .catch(function(error){
+    //             console.log("BOARDS ERROR: " + error) // 
+    //         })
+}
 
 class HeadBar extends Component {
     constructor(props){
@@ -61,7 +98,8 @@ class HeadBar extends Component {
         this.state = {
             username:'',
             password:'',
-            login:false
+            login:false,
+            tableListShow:false
         }
         
         this.onChange = this.onChange.bind(this);
@@ -72,22 +110,25 @@ class HeadBar extends Component {
 
     render(){
         return (
-            <AppBar 
-                position="static"
-                className = { styles.appBar }
-            >            
-                <Toolbar>
-                    <IconButton
-                        edge = "start"
-                        className = { styles.tableButton }
-                        color = "inherit"
-                        aria-label = "open drawer"
-                    >
-                        <TableChartOutlinedIcon />
-                    </IconButton>
-                    {Testing(this)}
-                </Toolbar>
-            </AppBar>
+            <div>
+                <AppBar 
+                    position="static"
+                    className = { styles.appBar }
+                >            
+                    <Toolbar>
+                        <IconButton
+                            edge = "start"
+                            className = { styles.tableButton }
+                            onClick = { this.SetTableView }
+                            color = "inherit"
+                            aria-label = "open drawer"
+                        >
+                            <TableChartOutlinedIcon />
+                        </IconButton>
+                        {Testing(this)}
+                    </Toolbar>
+                </AppBar>
+            </div>
         )
     }
 
@@ -116,16 +157,17 @@ class HeadBar extends Component {
                     sessionStorage.setItem('Token', 'Bearer eyJ0eXBlIjoiSldUIiwiYWxnIjoiSFM1MTIifQ.eyJpc3MiOiJ0cmVsbG8tc2VjdXJlIiwiYXVkIjoidHJlbGxvYXBwIiwic3ViIjoidGVzdDIiLCJleHAiOjE1NzQ5OTA1Mjd9.1fhsl_f5RuN4HNOXLIMxf2HhgwPVbNvVHL1J-DAd2FIN1VCaQsqXAWG1FKhj59S4vCAOQajdIYQNT2IsmsMwYQ')
                     // this.state.login = true
                     // this.forceUpdate();
-                    console.log("LOGIN: " + response) // dodać później info, że się zalogowaliśmy
+                    let res = JSON.stringify(response, null, 20);
+                    console.log("LOGIN: " + res) // dodać później info, że się zalogowaliśmy
 
-                    loadContent();
+                    //loadContent();
+                   // getBoards();
                 })
                 .catch(function(error){
                     console.log("LOGIN ERROR: " + error) // dodać później info, że błąd
                 })
+        
     }
-
-    
 
     onSubmitRegister(e){
         e.preventDefault();
@@ -142,6 +184,10 @@ class HeadBar extends Component {
                     console.log("REGISTER ERROR: " + error) // dodać później info, że błąd
                 })
     }
+
+    SetTableView = () => {
+		this.setState({tableListShow: true});
+    };
 }
 
 export default HeadBar;

@@ -21,7 +21,7 @@ class App extends Component {
         {/*<Register/>*/}
         <HeadBar />
         <TrolloBoard boards = {boards} boardId = {0} lists = { lists }/>
-        {/*<TrolloBoardsList boards = { boards }/>*/}
+        {/* <TrolloBoardsList boards = { boards }/> */}
         {/* <TrolloCardView lists = {lists} listId = { 1 } cardId = { 0 } /> */}
       </div>
     );
