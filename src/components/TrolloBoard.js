@@ -1,5 +1,4 @@
 import React from "react";
-import HeadBar from "./HeadBar";
 import TrolloList from "./TrolloList";
 import TrolloCard from "./TrolloCard";
 import Grid from '@material-ui/core/Grid';
@@ -35,8 +34,7 @@ const TrolloBoard = ({boards, boardId, lists}) => {
 	const boardName = boards[boardId].name;
 	
 	return (
-		<div>
-			<HeadBar />
+		<div>			
 			<TrolloEditName name = { boardName } board/>
 			<div className = { styles.trolloList }>
 				{lists.map(list =>

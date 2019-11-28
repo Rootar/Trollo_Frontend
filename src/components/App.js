@@ -4,6 +4,8 @@ import TrolloBoardsList from './TrolloBoardsList';
 import Login from './Login';
 import Register from './Register';
 import TrolloCardView from "./TrolloCardView";
+import HeadBar from "./HeadBar";
+
 
 import { connect } from 'react-redux';
 
@@ -17,6 +19,7 @@ class App extends Component {
         {/*<TrolloBoard lists={lists}/>*/}
         {/*<Login/>*/}
         {/*<Register/>*/}
+        <HeadBar />
         <TrolloBoard boards = {boards} boardId = {0} lists = { lists }/>
         {/*<TrolloBoardsList boards = { boards }/>*/}
         {/* <TrolloCardView lists = {lists} listId = { 1 } cardId = { 0 } /> */}
