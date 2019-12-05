@@ -9,4 +9,9 @@ export const actions = {
 	nameBoard: "nameBoard",
 	nameList: "nameList",
 	nameCard: "nameCard",
+	addAttachment: "addAttachment",
+	addComment: "addComment",
+	addAtt2Comm: "addAtt2Comm",
+	removeAttachment: "removeAttachment",
+	removeComment: "removeComment",
 };

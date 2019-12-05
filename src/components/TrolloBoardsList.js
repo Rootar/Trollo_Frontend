@@ -37,24 +37,21 @@ const Styles = makeStyles(theme => ({
 const TrolloBoardsList = ({ boards }) => {
 	const styles = Styles();
 
-	if(sessionStorage.getItem('BoardMenu') == 1)
-		return (
-			<div>			
-				<List className ={ styles.list } component="nav" aria-label="main mailbox folders">
-				<ListSubheader align='center'>
-					Board
-				</ListSubheader>
-					{boards.map(board => 
-						<ListItem  button>
-							<TrolloBoardCard name = { board.name } button></TrolloBoardCard>
-						</ListItem>
-					)}
-					<TrolloAddButton board/>
-				</List>
-			</div>			
-		);
-	else return <div></div>
-					
+	return (
+		<div>			
+			<List className ={ styles.list } component="nav" aria-label="main mailbox folders">
+			<ListSubheader align='center'>
+				Board
+			</ListSubheader>
+				{boards.map(board => 
+					<ListItem  button>
+						<TrolloBoardCard name = { board.name } button></TrolloBoardCard>
+					</ListItem>
+				)}
+				<TrolloAddButton board/>
+			</List>
+		</div>			
+	);		
 }
 
 export default TrolloBoardsList;

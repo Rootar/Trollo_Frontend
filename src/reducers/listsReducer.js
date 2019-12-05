@@ -12,16 +12,41 @@ const initialState = [
 				id: 0,
 				name: "Stworzyć lootboxy",
 				description: "Stworzyć lootboxy",
+				attachments: [
+					{
+						content: "załącznik1"
+					}
+				],
+				comments: [
+					{
+						id: 0,
+						author: 2,
+						date: "05.12.2019",
+						text: "jestem komentarzem",
+						attachment: "",
+					},
+					{
+						id: 1,
+						author: 1,
+						date: "04.12.2019",
+						text: "czemu muszą tu być te lootboxy?",
+						attachment: "zal",
+					}
+				],
 			},
 			{
 				id: 1,
 				name: "Przygotować GDD",
 				description: "Przygotować game design document",
+				attachments: [],
+				comments: [],
 			},
 			{
 				id: 2,
 				name: "Zrobić testowe karty",
 				description: "no takie tam karty",
+				attachments: [],
+				comments: [],
 			}
 		]
 	},
@@ -33,11 +58,15 @@ const initialState = [
 				id: 0,
 				name: "Posegregować nazwy",
 				description: "Posegregować nazwy, żeby numeracja zgadzała się z poziomem",
+				attachments: [],
+				comments: [],
 			},
 			{
 				id: 1,
 				name: "Zrobić system ekwipunku",
 				description: "no bo jak to tak bez torby",
+				attachments: [],
+				comments: [],
 			}
 		]
 	},
@@ -49,11 +78,15 @@ const initialState = [
 				id: 0,
 				name: "Przygotować 81 modeli broni",
 				description: "Przygotować 81 modeli broni żeby był jakiś content",
+				attachments: [],
+				comments: [],
 			},
 			{
 				id: 1,
 				name: "Uruchomić testowe reklamy",
 				description: "Uruchomić testowe reklamy na urządzeniu tylko bez takich +18",
+				attachments: [],
+				comments: [],
 			}
 		]
 	}
@@ -74,7 +107,9 @@ const listsReducer = (state = initialState, action) => {
 			const newCard = {
 				id: lastCardId,
 				name: action.payload.name,
-				description: ""
+				description: "",
+				attachments: [],
+				comments: []
 			};
 			lastCardId += 1;
 
