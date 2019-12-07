@@ -45,7 +45,7 @@ const TrolloCardView = ({ lists, listId, cardId }) => {
 			<div className = {styles.cardView}>
 				<TrolloEditName name = { name }/>
 				<Icon>close</Icon>
-				<p> { description } </p>
+				<TrolloEditName name = { description } description/>
 				{ attachments.map(attachment => 
 					<ListItem button>
 						<p>{ attachment.content }</p>

@@ -9,6 +9,7 @@ export const actions = {
 	nameBoard: "nameBoard",
 	nameList: "nameList",
 	nameCard: "nameCard",
+	descriptionCard: "descriptionCard",
 	addAttachment: "addAttachment",
 	addComment: "addComment",
 	addAtt2Comm: "addAtt2Comm",

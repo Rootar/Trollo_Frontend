@@ -6,7 +6,7 @@ import { Icon, Button } from "@material-ui/core";
 import IconButton from '@material-ui/core/IconButton';
 
 import { connect } from "react-redux";
-import { SetBoardName, SetListName, SetCardName } from "../actions";
+import { SetBoardName, SetListName, SetCardName, SetCardDescription} from "../actions";
 
 const styles =
 {
@@ -48,8 +48,9 @@ class TrolloEditName extends React.Component {
 	RenderEditMode = () => {
 		const { list } = this.props;
 		const { board } = this.props;
+		const { description } = this.props;
 		const addbuttonText = "SAVE";
-		const addModePlaceholder = list ? "Enter list name..." : board ? "Enter board name..." : "Enter card name...";
+		const addModePlaceholder = list ? "Enter list name..." : board ? "Enter board name..." : description ? "Enter description..." : "Enter card name...";
 
 		return (
 			<div>
@@ -68,7 +69,7 @@ class TrolloEditName extends React.Component {
 					<Button
 						variant = "contained"
 						color = "primary"
-						onMouseDown = { list ? this.EditListName : board ? this.EditBoardName : this.EditCardName }
+						onMouseDown = { list ? this.EditListName : board ? this.EditBoardName : description ? this.EditCardDescription : this.EditCardName }
 					> { addbuttonText } </Button>
 					<Icon style = { styles.xButton }> close </Icon>
 				</div>
@@ -140,6 +141,18 @@ class TrolloEditName extends React.Component {
 		{
 			//this.setState({name: ""});
 			dispatch(SetCardName(listId, name))
+		}
+		return;
+	}
+
+	EditCardDescription = () => {
+		const { dispatch, listId } = this.props;
+		const { name } = this.state;
+
+		if(name)
+		{
+			//this.setState({name: ""});
+			dispatch(SetCardDescription(listId, name))
 		}
 		return;
 	}

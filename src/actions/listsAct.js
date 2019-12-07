@@ -41,3 +41,10 @@ export const SetCardName = (boardId, listId, name) => {
 		payload: {boardId, listId, name},
 	};
 };
+
+export const SetCardDescription = (boardId, listId, description) => {
+	return {
+		type: actions.descriptionCard,
+		payload: {boardId, listId, description},
+	};
+};

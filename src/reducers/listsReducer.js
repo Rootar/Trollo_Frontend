@@ -11,9 +11,10 @@ const initialState = [
 			{
 				id: 0,
 				name: "Stworzyć lootboxy",
-				description: "Stworzyć lootboxy",
+				description: "Stworzyć lootboxy opis",
 				attachments: [
 					{
+						name: "text.txt",
 						content: "załącznik1"
 					}
 				],
@@ -23,14 +24,16 @@ const initialState = [
 						author: 2,
 						date: "05.12.2019",
 						text: "jestem komentarzem",
-						attachment: "",
+						name: "text2.txt",
+						attachment: "123123",
 					},
 					{
 						id: 1,
 						author: 1,
 						date: "04.12.2019",
 						text: "czemu muszą tu być te lootboxy?",
-						attachment: "zal",
+						name: "",
+						attachment: "",
 					}
 				],
 			},
@@ -144,6 +147,23 @@ const listsReducer = (state = initialState, action) => {
 						if(state[i].cards[j].id == action.payload.listId)
 						{
 							state[i].cards[j].name = action.payload.name;
+							break;
+						}
+					}
+					break;
+				}
+			}
+			return state;
+		case actions.nameCard:
+			for(var i = 0; i < state.length; ++i)
+			{
+				if(state[i].id == action.payload.listId)
+				{
+					for(var j = 0; j < state[i].cards.length; ++j)
+					{
+						if(state[i].cards[j].id == action.payload.listId)
+						{
+							state[i].cards[j].description = action.payload.description;
 							break;
 						}
 					}
