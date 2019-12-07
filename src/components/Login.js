@@ -10,14 +10,14 @@ const Stylesx = makeStyles(theme => ({
 	},
 }));
 
-const Login = () => {
+const Login = ( { loginCallback, signinCallback, signupCallback } ) => {
 	const Styles = Stylesx();
 
 	return (
 		<div>
-			<SignInSignUpBar/>
+			<SignInSignUpBar signinCallback = { signinCallback } signupCallback = { signupCallback }/>
 			<br/>
-			<SignIn/>
+			<SignIn loginCallback = { loginCallback }/>
 		</div>
 	);
 }

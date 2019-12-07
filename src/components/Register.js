@@ -10,12 +10,12 @@ const Stylesx = makeStyles(theme => ({
 	},
 }));
 
-const Register = () => {
+const Register = ( {signinCallback, signupCallback} ) => {
 	const Styles = Stylesx();
 
 	return (
 		<div>
-			<SignInSignUpBar/>
+			<SignInSignUpBar signinCallback = { signinCallback } signupCallback = { signupCallback }/>
 			<br/>
 			<SignUp/>
 		</div>

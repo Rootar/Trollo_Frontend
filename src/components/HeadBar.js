@@ -35,7 +35,10 @@ const styles = makeStyles(theme => ({
     }
 }));
 
-function Testing(that){
+/*function Testing(that) {
+    return (<form autoComplete="off" noValidate className={styles.form} >
+            <Button variant = "contained" color = "primary" className = { styles.logoutButton } onClick={that.logout}> Logout </Button>
+        </form>)
     if(that.state.login == false){
         return (<form autoComplete="off" noValidate className={styles.form} >
             <TextField name="username" label="Username" value={that.state.username} onChange={that.onChange} className={styles.inputText}/>
@@ -59,7 +62,7 @@ function getBoards()
     let config = {
             headers: {
                 'Authorization': 'Bearer ' + sessionStorage.getItem('Token'),
-                Accept: "*/*",
+                Accept: "* /*",
                 "Content-Type": "application/json"
            }
         }
@@ -90,7 +93,7 @@ function getBoards()
     //         .catch(function(error){
     //             console.log("BOARDS ERROR: " + error) // 
     //         })
-}
+}*/
 
 class HeadBar extends Component {
     constructor(props){
@@ -100,15 +103,13 @@ class HeadBar extends Component {
             username:'',
             password:'',
             login: sessionStorage.getItem('Token') ? true : false,
-            // tableListShow:false
         }
         
-        this.onChange = this.onChange.bind(this);
-        this.onSubmitLogin = this.onSubmitLogin.bind(this);
-        this.onSubmitRegister = this.onSubmitRegister.bind(this);
+        //this.onChange = this.onChange.bind(this);
+        //this.onSubmitLogin = this.onSubmitLogin.bind(this);
+        //this.onSubmitRegister = this.onSubmitRegister.bind(this);
         this.logout = this.logout.bind(this);
-
-        // sessionStorage.setItem('BoardMenu', 0)
+        this.SetBoardView = this.SetBoardView.bind(this);
     }
 
     render(){
@@ -122,26 +123,28 @@ class HeadBar extends Component {
                         <IconButton
                             edge = "start"
                             className = { styles.tableButton }
-                            onClick = { this.SetTableView }
+                            onClick = { this.SetBoardView }
                             color = "inherit"
                             aria-label = "open drawer"
                         >
                             <TableChartOutlinedIcon />
                         </IconButton>
-                        {Testing(this)}
+                        <Button
+                            variant = "contained"
+                            color = "primary"
+                            className = { styles.logoutButton }
+                            onClick = { this.logout}
+                        >
+                            Logout
+                        </Button>
+                        {/* {Testing(this)} */}
                     </Toolbar>
                 </AppBar>
             </div>
         )
     }    
 
-    logout(e){
-        sessionStorage.removeItem('Token')
-        this.state.login=false
-        this.forceUpdate();
-    }
-
-    onChange(e){
+    /*onChange(e){
         this.setState({[e.target.name]:e.target.value})
     }
 
@@ -180,15 +183,15 @@ class HeadBar extends Component {
                 })
                 
         this.forceUpdate();
+    }*/
+
+    logout(e) {
+        this.props.logoutCallBack();
     }
 
-    SetTableView = () => {
-        console.log(sessionStorage.getItem('BoardMenu'))
-        if(sessionStorage.getItem('BoardMenu') == 1)
-            sessionStorage.setItem('BoardMenu', 0);
-        else
-            sessionStorage.setItem('BoardMenu', 1);
-    };
+    SetBoardView(e) {
+        this.props.showBoardCallBack();
+    }
 }
 
 export default HeadBar;
