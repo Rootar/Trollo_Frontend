@@ -82,9 +82,11 @@ class App extends Component {
 	}
 
 	OpenCard = (listId, cardId) => {
-		this.state.listId = {listId};
-		this.state.cardId = {cardId};
-		this.setState({showCard: true});
+		this.setState({
+			listId: listId,
+			cardId: cardId,
+			showCard: true
+		})
 	};
 
 	CloseCard = () => {
@@ -92,10 +94,12 @@ class App extends Component {
 	};
 
 	LoginToBoard = (login, password) => {
-		this.setState({login: true});
-		this.setState({loginView: false});
-		this.state.username = {login};
-		this.state.password = {password};
+		this.setState({
+			login: true,
+			loginView: false,
+			username: login,
+			password: password
+		});
     }
 
 	Logout = () => {

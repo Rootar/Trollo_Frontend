@@ -61,6 +61,7 @@ class SignIn extends Component {
 					</div>
 					<Button
 						className = { styles.button }
+						onClick =  { () => { this.props.signupCallback() }}
 						color="primary"
 					>
 						or create an account
@@ -122,7 +123,8 @@ class SignIn extends Component {
 	
 	onChange(e) {
 		this.setState({[e.target.name]: e.target.value});
-    }
+	}
+	
 }
 
 export default SignIn;

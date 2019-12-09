@@ -17,7 +17,7 @@ const Login = ( { loginCallback, signinCallback, signupCallback } ) => {
 		<div>
 			<SignInSignUpBar signinCallback = { signinCallback } signupCallback = { signupCallback }/>
 			<br/>
-			<SignIn loginCallback = { loginCallback }/>
+			<SignIn loginCallback = { loginCallback } signupCallback = { signupCallback }/>
 		</div>
 	);
 }

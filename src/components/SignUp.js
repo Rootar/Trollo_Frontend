@@ -62,6 +62,7 @@ class SignUp extends Component {
 					<Button
 						className = { styles.button}
 						color="primary"
+						onClick = { () => { this.props.signinCallback(); }}
 					>
 						or login
 					</Button>
