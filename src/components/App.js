@@ -15,7 +15,7 @@ const page = {
 
 class App extends Component {
     state = {
-        page: page.MAIN,
+        page: page.BOARD,
         isLoggedIn: sessionStorage.getItem('Token') ? true : false
     }
 

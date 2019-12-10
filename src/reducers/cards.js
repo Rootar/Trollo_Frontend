@@ -14,8 +14,8 @@ const cards = (state = [], action) => {
         //     if(index !== -1)
         //         state.splice(index, 1);
         //     return state
-        // default:
-        //     return state
+        default:
+            return state
     }
 }
 
