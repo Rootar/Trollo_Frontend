@@ -5,6 +5,7 @@ import Grid from '@material-ui/core/Grid';
 import { Button } from "@material-ui/core";
 import axios from 'axios'
 import PropTypes from 'prop-types'
+import {NotificationManager} from 'react-notifications';
 
 const styles = theme => ({
     text:{
@@ -50,8 +51,8 @@ class RegisterPage extends Component {
         axios.post('https://trollo195.herokuapp.com/user/register', {
             login: this.state.username, 
             password: this.state.password})
-                .then(function(response){			
-					// that.props.Callback(); 
+                .then(function(response){
+                    NotificationManager.success('Successful!', 'Registriation');
                 })
                 .catch(function(error){
                     console.log("REGISTER ERROR: " + error) // dodać później info, że błąd
