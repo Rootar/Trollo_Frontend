@@ -54,7 +54,7 @@ class RegisterPage extends Component {
                     NotificationManager.success('Hello ' + that.state.username, 'Registriation Successful!');
                 })
                 .catch(function(error){
-                    NotificationManager.error('Faild, ' + error.response.data, 'Registriation Faild')
+                    NotificationManager.error(error.response.data, 'Registriation Faild')
                 })
 	}
 

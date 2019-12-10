@@ -5,6 +5,7 @@ import Grid from '@material-ui/core/Grid';
 import { Button } from "@material-ui/core";
 import axios from 'axios'
 import PropTypes from 'prop-types'
+import {NotificationManager} from 'react-notifications';
 
 const styles = theme => ({
     text:{
@@ -52,11 +53,13 @@ class LoginPage extends Component {
             password: this.state.password})
                 .then(function(response){
                     sessionStorage.setItem('Token', response.headers['authorization']);
-                    sessionStorage.setItem('Username', that.state.username)				
+                    sessionStorage.setItem('Username', that.state.username)
+                    NotificationManager.success('Hello ' + that.state.username, 'Sign In Successful!');
+
 					that.props.loginCallback(); 
                 })
                 .catch(function(error){
-                    console.log("LOGIN ERROR: " + error) // dodać później info, że błąd
+                    NotificationManager.error(error.response.data, 'Login Faild!')
                 })
 	}
 
