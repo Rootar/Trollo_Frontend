@@ -46,16 +46,15 @@ class RegisterPage extends Component {
 
     onSubmitRegister(e)
 	{
-		// let that = this;
-
+        let that = this
         axios.post('https://trollo195.herokuapp.com/user/register', {
             login: this.state.username, 
             password: this.state.password})
                 .then(function(response){
-                    NotificationManager.success('Successful!', 'Registriation');
+                    NotificationManager.success('Hello ' + that.state.username, 'Registriation Successful!');
                 })
                 .catch(function(error){
-                    console.log("REGISTER ERROR: " + error) // dodać później info, że błąd
+                    NotificationManager.error('Faild, ' + error.response.data, 'Registriation Faild')
                 })
 	}
 
