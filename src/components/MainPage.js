@@ -6,6 +6,7 @@ import { Button } from "@material-ui/core";
 import TextField from '@material-ui/core/TextField';
 import Axios from 'axios';
 import PropTypes from 'prop-types'
+import {NotificationManager} from 'react-notifications';
 
 const styles = theme => ({
     text:{
@@ -27,6 +28,10 @@ class MainPage extends Component {
     }
 
     componentDidMount() {
+        this.loadBoardsList()
+    }
+
+    loadBoardsList(){
         if(this.props.isLoggedIn){
             let that = this;
             Axios.get('https://trollo195.herokuapp.com/boards/getBoards',{
@@ -95,6 +100,8 @@ class MainPage extends Component {
             }
         })
             .then(function(response){
+                NotificationManager.success('Name ' + that.state.boardName, 'Creating Board Succeed!');
+                that.loadBoardsList()
                 that.setState({boardName: ''})
             })
             .catch(function(error){
