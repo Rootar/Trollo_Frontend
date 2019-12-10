@@ -1,18 +1,19 @@
 // jeżeli zalogowany to widok tablic, jeżeli wylogowany, to przyciski przenoszące do stron do logowania i rejestracji
 import React, {Component} from 'react';
-// import { makeStyles } from '@material-ui/core/styles';
+import { withStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import { Button } from "@material-ui/core";
 import TextField from '@material-ui/core/TextField';
 import Axios from 'axios';
+import PropTypes from 'prop-types'
 
-// var useStyles = makeStyles(theme => ({
-//     text:{
-//         marginTop: "20px"
-//     }
-// }));
+const styles = theme => ({
+    text:{
+        marginTop: "20px"
+    }
+});
 
-class RegisterPage extends Component {    
+class MainPage extends Component {    
 	constructor(props){
 		super(props);
 
@@ -52,15 +53,19 @@ class RegisterPage extends Component {
     }
 
     whenLoggedOut(){
+        const {classes} = this.props
+
         return (
             <Grid container direction="column" justify="center" alignItems="center">                
-                <Grid item><Button variant="contained" color="primary" onClick={this.props.loginPageCallback}>Go to login page</Button></Grid>
-                <Grid item><Button variant="contained" color="primary" onClick={this.props.registerPageCallback}>Go to register page</Button></Grid>
+                <Grid item className={classes.text}><Button variant="contained" color="primary" onClick={this.props.loginPageCallback}>Go to login page</Button></Grid>
+                <Grid item className={classes.text}><Button variant="contained" color="primary" onClick={this.props.registerPageCallback}>Go to register page</Button></Grid>
             </Grid>
         )
     }
 
     whenLoggedIn(){
+        // const {classes} = this.props
+
         return (
             <Grid container direction="column" justify="center" alignItems="center">
                 {this.state.boards.map((board) => (
@@ -106,4 +111,8 @@ class RegisterPage extends Component {
     }
 }
 
-export default RegisterPage
+MainPage.propTypes = {
+    classes: PropTypes.object.isRequired,
+};
+
+export default withStyles(styles)(MainPage)

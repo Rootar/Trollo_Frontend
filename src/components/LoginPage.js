@@ -1,15 +1,16 @@
 import React, {Component} from 'react';
-import { makeStyles } from '@material-ui/core/styles';
+import { withStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Grid from '@material-ui/core/Grid';
 import { Button } from "@material-ui/core";
 import axios from 'axios'
+import PropTypes from 'prop-types'
 
-var useStyles = makeStyles(theme => ({
+const styles = theme => ({
     text:{
         marginTop: "20px"
     }
-}));
+});
 
 class LoginPage extends Component {    
 	constructor(props){
@@ -25,9 +26,10 @@ class LoginPage extends Component {
     }
     
     render(){
+        const {classes} = this.props
         return (
             <Grid container direction="column" justify="center" alignItems="center">
-                <Grid item className={useStyles.text}>
+                <Grid item className={classes.text}>
                     Login to Trollo
                 </Grid>
                 <form noValidate autoComplete="off">
@@ -63,4 +65,8 @@ class LoginPage extends Component {
     }
 }
 
-export default LoginPage
+LoginPage.propTypes = {
+    classes: PropTypes.object.isRequired,
+};
+
+export default withStyles(styles)(LoginPage)
