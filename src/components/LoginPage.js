@@ -49,7 +49,8 @@ class LoginPage extends Component {
             login: this.state.username, 
             password: this.state.password})
                 .then(function(response){
-					sessionStorage.setItem('Token', response.headers['authorization']);					
+                    sessionStorage.setItem('Token', response.headers['authorization']);
+                    sessionStorage.setItem('Username', that.state.username)				
 					that.props.loginCallback(); 
                 })
                 .catch(function(error){

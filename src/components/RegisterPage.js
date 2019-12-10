@@ -43,7 +43,7 @@ class RegisterPage extends Component {
 
     onSubmitRegister(e)
 	{
-		let that = this;
+		// let that = this;
 
         axios.post('https://trollo195.herokuapp.com/user/register', {
             login: this.state.username, 

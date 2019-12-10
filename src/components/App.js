@@ -4,7 +4,7 @@ import HeadBar from './HeadBar'
 import LoginPage from './LoginPage'
 import RegisterPage from './RegisterPage'
 import MainPage from './MainPage'
-import axios from "axios";
+// import axios from "axios";
 
 const page = {
     LOGIN: 'login',
@@ -76,6 +76,7 @@ class App extends Component {
         console.log("LOGOUT")
         this.setState({isLoggedIn: false})
         sessionStorage.removeItem('Token')
+        sessionStorage.removeItem('Username')
         this.setState({page: 'main'})
     }
 

@@ -6,7 +6,10 @@ import { addLane, deleteLane } from "../actions";
 class TrelloBoard extends Component {  
     componentDidMount(){
       this.props.addLane('test')
-      this.props.deleteLane(2)
+      this.props.addLane('test2')
+      this.props.addLane('test3')
+      this.props.addLane('test4')
+      this.props.deleteLane('2')
     }  
   
     render(){
@@ -22,6 +25,7 @@ class TrelloBoard extends Component {
           editLaneTitle={true}
           canAddLanes={true}
           collapsibleLanes={true}
+          onLaneAdd={onLaneAddEvent}
         />
       );
     }  
@@ -35,6 +39,10 @@ class TrelloBoard extends Component {
     addLane: title => dispatch(addLane(title)),
     deleteLane: id => dispatch(deleteLane(id))
   })
+
+  const onLaneAddEvent = (params) => {
+    console.log(params)
+  }
   
   export default connect(
     mapStateToProps,

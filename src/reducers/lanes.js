@@ -12,7 +12,7 @@ const lanes = (state = [], action) => {
         case 'DELETE_LANE':
             const index = state.findIndex(v => v.id === action.id)
             if(index !== -1)
-                state.splice(index,1);
+                state.splice(index, 1);
             return state
         default:
             return state
