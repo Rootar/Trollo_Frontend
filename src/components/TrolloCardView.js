@@ -5,7 +5,7 @@ import TrolloCard from "./TrolloCard";
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
-import { Card } from "@material-ui/core";
+import { Card, Grid } from "@material-ui/core";
 import CardContent from '@material-ui/core/CardContent';
 import ListSubheader from '@material-ui/core/ListSubheader';
 import { Icon, Button } from "@material-ui/core";
@@ -33,18 +33,29 @@ const Styles = makeStyles(theme => ({
 	},
 }));
 
-const TrolloCardView = ({ lists, listId, cardId }) => {
+const TrolloCardView = ({ lists, listId, cardId, closeCallback}) => {
 	const styles = Styles();
 	const name = lists[listId].cards[cardId].name;
 	const description = lists[listId].cards[cardId].description;
 	const attachments = lists[listId].cards[cardId].attachments;
 	const comments = lists[listId].cards[cardId].comments;
+	const close = () => closeCallback();
 
 	return (
 		<div className = {styles.cardBG}>	
 			<div className = {styles.cardView}>
-				<TrolloEditName name = { name }/>
-				<Icon>close</Icon>
+				<Grid 
+				container 
+				direction="row"
+				justify="space-between"
+				>
+					<Grid item xs = {9}>
+						<TrolloEditName name = { name }/>
+					</Grid>
+					<Grid item xs>
+						<Button onClick = { () => close()}>Close</Button>
+					</Grid>
+				</Grid>
 				<TrolloEditName name = { description } description/>
 				{ attachments.map(attachment => 
 					<ListItem button>

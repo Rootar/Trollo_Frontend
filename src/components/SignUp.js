@@ -108,7 +108,7 @@ class SignUp extends Component {
 	onSubmitRegister(e){
 		e.preventDefault();
 		
-		if(this.state.pass != this.state.reppass)
+		if(this.state.pass !== this.state.reppass)
 		{
 			console.log("invalid repeat password");
 			return;

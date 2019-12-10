@@ -5,6 +5,8 @@ import Login from './Login';
 import Register from './Register';
 import TrolloCardView from "./TrolloCardView";
 import HeadBar from "./HeadBar";
+import axios from "axios";
+
 
 import { connect } from 'react-redux';
 
@@ -60,7 +62,7 @@ class App extends Component {
 			<div className="App">
 				<HeadBar logoutCallBack = { this.Logout } showBoardCallBack = { this.SwitchBoardList }/>
 				<TrolloBoard boards = {boards} boardId = {0} lists = { lists }/>
-				<TrolloCardView lists = {lists} listId = { this.state.listId } cardId = { this.state.cardId } />
+				<TrolloCardView lists = {lists} listId = { this.state.listId } cardId = { this.state.cardId } closeCallback = { () => this.CloseCard()} />
 			</div>
 		)
 	}
@@ -68,7 +70,9 @@ class App extends Component {
 	ShowLoginMode = () => {
 		return (
 			<div className="App">
-				<Login loginCallback = { this.LoginToBoard } signinCallback = { this.SwtchToLogin } signupCallback = { this.SwtchToRegister }/>
+				<Login loginCallback = { this.LoginToBoard } signinCallback = { this.SwtchToLogin } signupCallback = { this.SwtchToRegister }
+					callbacks = {{ login: this.LoginToBoard, signin: this.SwtchToLogin, signup: this.SwtchToRegister}}
+				/>
 			</div>
 		)
 	}
@@ -100,6 +104,18 @@ class App extends Component {
 			username: login,
 			password: password
 		});
+
+		console.log("[App] Token: " + sessionStorage.getItem('Token'));
+		let config = { headers: {'authorization': sessionStorage.getItem('Token')}};
+		let body = { username: login }
+
+		console.log(body);
+		
+		axios.get('https://trollo195.herokuapp.com/boards/getBoards', body, config)
+		.then((response) => {
+			console.log(response);
+		})
+		.catch((error) => console.log(error));
     }
 
 	Logout = () => {

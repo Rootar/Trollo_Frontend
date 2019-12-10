@@ -27,7 +27,7 @@ const styles = makeStyles(theme => ({
 	registerLabel: {
 		textAlign: "left",
 		fontSize: 20,
-	},
+	}
 }));
 
 class SignIn extends Component {
@@ -36,6 +36,7 @@ class SignIn extends Component {
 
 		this.onChange = this.onChange.bind(this);
 		this.onSubmitLogin = this.onSubmitLogin.bind(this);
+		this.errorMessageLabel = React.createRef();
 	}
 
 	state = {
@@ -43,6 +44,7 @@ class SignIn extends Component {
 		password:'',
 		login: sessionStorage.getItem('Token') ? true : false,
 	}
+
 
 	render()
 	{
@@ -102,23 +104,30 @@ class SignIn extends Component {
 	{
         e.preventDefault();
 
-        console.log("LOGIN STATE: " + this.state);
+		console.log("LOGIN STATE: " + this.state);
 
-        axios.post('https://trollo195.herokuapp.com/login', {
+		this.tryGetToken(() => { this.props.loginCallback(this.state.username, this.state.password)});
+				
+		this.setState({ log: true });                 
+        this.forceUpdate();
+	}
+
+	async tryGetToken(loginCallback)
+	{
+		axios.post('https://trollo195.herokuapp.com/login', {
             login: this.state.username, 
             password: this.state.password})
                 .then(function(response){
-                    sessionStorage.setItem('Token', response.headers['authorization']);                    
+					console.log("response: " + response.headers['authorization']);
+					sessionStorage.setItem('Token', response.headers['authorization']);
+					console.log("[SingIn] Token: " + sessionStorage.getItem('Token'));
+					loginCallback();
+					// sessionStorage.setItem('Token', response.headers['authorization']);
                 })
                 .catch(function(error){
-                    console.log("LOGIN ERROR: " + error) // dodać później info, że błąd
+					console.error("LOGIN ERROR: " + error) // dodać później info, że błąd
+					throw "Opps";
                 })
-		
-
-		this.props.loginCallback(this.state.username.value, this.state.password.value);
-
-        this.state.login = true
-        this.forceUpdate();
 	}
 	
 	onChange(e) {

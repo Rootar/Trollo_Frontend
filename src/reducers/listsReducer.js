@@ -128,9 +128,9 @@ const listsReducer = (state = initialState, action) => {
 
 			return newLists
 		case actions.nameList:
-			for(var i = 0; i < state.length; ++i)
+			for(let i = 0; i < state.length; ++i)
 			{
-				if(state[i].id == action.payload.listId)
+				if(state[i].id === action.payload.listId)
 				{
 					state[i].title = action.payload.title;
 					break;
@@ -138,32 +138,15 @@ const listsReducer = (state = initialState, action) => {
 			}
 			return state;
 		case actions.nameCard:
-			for(var i = 0; i < state.length; ++i)
+			for(let i = 0; i < state.length; ++i)
 			{
-				if(state[i].id == action.payload.listId)
+				if(state[i].id === action.payload.listId)
 				{
 					for(var j = 0; j < state[i].cards.length; ++j)
 					{
-						if(state[i].cards[j].id == action.payload.listId)
+						if(state[i].cards[j].id === action.payload.listId)
 						{
 							state[i].cards[j].name = action.payload.name;
-							break;
-						}
-					}
-					break;
-				}
-			}
-			return state;
-		case actions.nameCard:
-			for(var i = 0; i < state.length; ++i)
-			{
-				if(state[i].id == action.payload.listId)
-				{
-					for(var j = 0; j < state[i].cards.length; ++j)
-					{
-						if(state[i].cards[j].id == action.payload.listId)
-						{
-							state[i].cards[j].description = action.payload.description;
 							break;
 						}
 					}
