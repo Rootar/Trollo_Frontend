@@ -62,7 +62,7 @@ class SignUp extends Component {
 					<Button
 						className = { styles.button}
 						color="primary"
-						onClick = { () => { this.props.signinCallback(); }}
+						onClick = { () => { this.props.callbacks.signin(); }}
 					>
 						or login
 					</Button>
@@ -105,7 +105,7 @@ class SignUp extends Component {
 		);
 	}
 
-	onSubmitRegister(e){
+	async onSubmitRegister(e){
 		e.preventDefault();
 		
 		if(this.state.pass !== this.state.reppass)
@@ -114,18 +114,31 @@ class SignUp extends Component {
 			return;
 		}
 
-        console.log("REGISTER STATE: " + this.state);
+		console.log("REGISTER STATE: ");
+		console.log(this.state)
 
-        axios.post('https://trollo195.herokuapp.com/user/register', {
-            login: this.state.username, 
-            password: this.state.password})
-                .then(function(response){
-                    console.log("RESPONSE: " + response) // dodać później info, że się zarejestrowaliśmy                    
-                })
-                .catch(function(error){
-                    console.log("REGISTER ERROR: " + error) // dodać później info, że błąd
-                })
-                
+		let requestBody = {
+			login: this.state.username,
+			password: this.state.pass
+		}
+
+		try{
+
+			const response = await axios.post('https://trollo195.herokuapp.com/user/register', requestBody)
+			console.log("REGISTER RESPONSE: ");
+			console.log(response);
+			if(response.status === 200) {
+				console.log(this.props.callbacks.login);
+				this.props.callbacks.signin();
+			}
+			else{
+				console.log("dupa")
+			}
+		}
+		catch (error) {
+			console.log("REGISTER ERROR: ") // dodać później info, że błąd
+			console.log(error)
+		}
         this.forceUpdate();
 	}
 	

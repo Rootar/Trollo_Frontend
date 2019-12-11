@@ -17,7 +17,9 @@ const Register = ( {signinCallback, signupCallback} ) => {
 		<div>
 			<SignInSignUpBar signinCallback = { signinCallback } signupCallback = { signupCallback }/>
 			<br/>
-			<SignUp signinCallback = { signinCallback }/>
+			<SignUp callbacks = {{ 
+				signin: signinCallback,
+			}}/>
 		</div>
 	);
 }
