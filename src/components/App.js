@@ -4,7 +4,7 @@ import HeadBar from './HeadBar'
 import LoginPage from './LoginPage'
 import RegisterPage from './RegisterPage'
 import MainPage from './MainPage'
-// import axios from "axios";
+import axios from "axios";
 
 const page = {
     LOGIN: 'login',
@@ -14,9 +14,17 @@ const page = {
 }
 
 class App extends Component {
+    constructor(props){
+        super(props)
+        axios.defaults.headers.common = {
+            'Authorization': sessionStorage.getItem('Token')
+        }
+    }
+
     state = {
-        page: page.BOARD,
-        isLoggedIn: sessionStorage.getItem('Token') ? true : false
+        page: page.MAIN,
+        isLoggedIn: sessionStorage.getItem('Token') ? true : false,
+        boardId: ''   
     }
 
     render(){
@@ -56,7 +64,11 @@ class App extends Component {
         return (
             <div>
                 <HeadBar logoutCallBack={this.Logout} isLoggedIn={this.state.isLoggedIn} mainPageCallBack={this.RedirectToMainPage}/>
-                <MainPage isLoggedIn={this.state.isLoggedIn} loginPageCallback={this.RedirectToLoginPage} registerPageCallback={this.RedirectToRegisterPage}/>
+                <MainPage 
+                    isLoggedIn={this.state.isLoggedIn} 
+                    loginPageCallback={this.RedirectToLoginPage} 
+                    registerPageCallback={this.RedirectToRegisterPage} 
+                    boardPageCallback={this.RedirectToBoardPage}/>
             </div>
         )
     }
@@ -65,7 +77,7 @@ class App extends Component {
         return (
             <div className="App">
                 <HeadBar logoutCallBack={this.Logout} isLoggedIn={true} mainPageCallBack={this.RedirectToMainPage}/>
-                <TrelloBoard/>
+                <TrelloBoard boardId={this.state.boardId}/>
             </div>
         )
     }
@@ -100,6 +112,10 @@ class App extends Component {
         this.setState({page: 'register'})
     }
 
+    RedirectToBoardPage = (boardId) => {
+        this.setState({boardId: boardId.toString()})
+        this.setState({page: 'board'})
+    }
 }
 
 export default App

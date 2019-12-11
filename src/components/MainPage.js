@@ -4,7 +4,7 @@ import { withStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import { Button } from "@material-ui/core";
 import TextField from '@material-ui/core/TextField';
-import Axios from 'axios';
+import axios from 'axios';
 import PropTypes from 'prop-types'
 import {NotificationManager} from 'react-notifications';
 
@@ -34,13 +34,9 @@ class MainPage extends Component {
     loadBoardsList(){
         if(this.props.isLoggedIn){
             let that = this;
-            Axios.get('https://trollo195.herokuapp.com/boards/getBoards',{
-                headers: {
-                    'Authorization': sessionStorage.getItem('Token')
-                },
-                data: {}
-            })
+            axios.get('https://trollo195.herokuapp.com/boards/getBoards',{data:{}})
                 .then(function(response){
+                    // console.log(response)
                     that.setState({boards: response.data.boards})
                 })
                 .catch(function(error){
@@ -74,7 +70,7 @@ class MainPage extends Component {
         return (
             <Grid container direction="column" justify="center" alignItems="center">
                 {this.state.boards.map((board) => (
-                    <Grid item><div>{board.name}</div><Button variant="contained" color="primary" onClick={() => this.onSubmitGoToBoard(board.name)}>Go to board</Button></Grid>                    
+                    <Grid item><div>{board.name}</div><Button variant="contained" color="primary" onClick={() => this.onSubmitGoToBoard(board.boardId)}>Go to board</Button></Grid>                    
                 ))}      
 
                 <Grid direction="row" item container justify="center" alignItems="center">
@@ -92,12 +88,8 @@ class MainPage extends Component {
     onSubmitCreateBoard(e)
 	{
         let that = this
-		Axios.post('https://trollo195.herokuapp.com/boards',{            
+		axios.post('https://trollo195.herokuapp.com/boards',{            
             name: this.state.boardName
-        },{
-            headers: {
-                'Authorization': sessionStorage.getItem('Token')
-            }
         })
             .then(function(response){
                 NotificationManager.success('Name ' + that.state.boardName, 'Creating Board Succeed!');
@@ -113,8 +105,8 @@ class MainPage extends Component {
 		this.setState({[e.target.name]: e.target.value});
     }
 
-    onSubmitGoToBoard(e){
-        console.log(e)
+    onSubmitGoToBoard(boardId){
+        this.props.boardPageCallback(boardId)
     }
 }
 

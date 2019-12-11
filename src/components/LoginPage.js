@@ -53,9 +53,14 @@ class LoginPage extends Component {
             password: this.state.password})
                 .then(function(response){
                     sessionStorage.setItem('Token', response.headers['authorization']);
+                    axios.defaults.headers.common = {
+                        'Authorization': sessionStorage.getItem('Token'),
+                        'Content-Type': 'application/json'
+                    }
+
                     sessionStorage.setItem('Username', that.state.username)
                     NotificationManager.success('Hello ' + that.state.username, 'Sign In Successful!');
-
+                    
 					that.props.loginCallback(); 
                 })
                 .catch(function(error){
