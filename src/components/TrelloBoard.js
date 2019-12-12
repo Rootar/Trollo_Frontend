@@ -35,7 +35,7 @@ class TrelloBoard extends Component {
                 handleLaneDragEnd={handleLaneDragEndEvent}
                 onDataChange={onDataChangeEvent}
                 onCardClick={onCardClickEvent}
-                onCardAdd={onCardAddEvent}
+                onCardAdd={(card, laneId) => onCardAddEvent(card, laneId, this)}
                 onCardDelete={onCardDeleteEvent}
                 onCardMoveAcrossLanes={onCardMoveAcrossLanesEvent}
                 onLaneAdd={(params) => onLaneAddEvent(params, this.props.boardId, this)}
@@ -77,7 +77,7 @@ const loadLanessList = async(boardId, that) => {
         })
         .catch(function(error){
             console.log("CREATE BOARD ERROR: " + error)
-            NotificationManager.error(error.response.data, 'Load board Faild!')
+            NotificationManager.error('', 'Load board Faild!')
         })
     loadTaskList(boardId, that)
 }
@@ -96,7 +96,7 @@ const loadTaskList = (boardId, that) => {
                                     that.setState({'finish':true})
                                 })
                                 .catch(function(error){
-                                    NotificationManager.error(error.response.data, 'Get task info Faild!')
+                                    NotificationManager.error('', 'Get task info Faild!')
 
                                     console.log("GET TASK INFO ERROR: " + error)
                                     console.log(error)
@@ -107,7 +107,7 @@ const loadTaskList = (boardId, that) => {
             )
         })
         .catch(function(error){
-            NotificationManager.error(error.response.data, 'Get task lists Faild!')
+            NotificationManager.error('', 'Get task lists Faild!')
 
             console.log("GET TASK LISTS ERROR: " + error)
         })
@@ -142,19 +142,18 @@ const onCardClickEvent = (cardId, metadata, laneId) => {
     console.log('EVENT: onCardClickEvent')
 }
 
-const onCardAddEvent = (card, laneId) => { // title, description
+const onCardAddEvent = (card, laneId, that) => { // title, description
     console.log('EVENT: onCardAddEvent')
-    let that = this
     axios.post('https://trollo195.herokuapp.com/tasks/add/' + laneId, {
         description: card.description
     })
         .then(function(response){
             that.props.addCard(response.data.description, response.data.taskListId, response.data.taskId)
-            NotificationManager.success('', 'Add Card Successful!');
+            NotificationManager.success(response.data.description, 'Add Card Successful!');
             
         })
         .catch(function(error){
-            NotificationManager.error(error.response.data, 'Add Card Faild!')
+            NotificationManager.error('', 'Add Card Faild!')
 
             console.log(error)
         })
@@ -175,10 +174,10 @@ const onLaneAddEvent = (params, boardId, that) => { //title: "..."
     })
         .then(function(response){
             that.props.addLane(params.title, response.data.taskListId)
-            NotificationManager.success('', 'Add Lane Successful!');
+            NotificationManager.success(params.title, 'Add Lane Successful!');
         })
         .catch(function(error){
-            NotificationManager.error(error.response.data, 'Add Lane Faild!')
+            NotificationManager.error('', 'Add Lane Faild!')
             console.log(error)
         })
 }
@@ -196,11 +195,11 @@ const onLaneUpdateEvent = (laneId, data, that) => { //title: "..."
     })
         .then(function(response){
             that.props.changeLaneName(data.title, laneId)
-            NotificationManager.success('', 'Change Lane Name Succeed!');
+            NotificationManager.success(data.title, 'Change Lane Name Succeed!');
 
         })
         .catch(function(error){
-            NotificationManager.error(error.response.data, 'Change Lane Name Faild!')
+            NotificationManager.error('', 'Change Lane Name Faild!')
 
             console.log(error)
         })
