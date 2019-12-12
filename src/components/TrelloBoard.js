@@ -1,13 +1,17 @@
 import React, {Component} from 'react';
-import Board from 'react-trello'
+import AsyncBoard from 'react-trello'
 import { connect } from "react-redux";
-import { addLane, clear, changeLaneName} from "../actions";
+import { addLane, clear, changeLaneName, addCard, changeCardName} from "../actions";
 import axios from 'axios';
 
 class TrelloBoard extends Component {
-    componentDidMount(){
+    async componentDidMount(){
         this.props.clear()
-        loadLanessList(this.props.boardId, this);
+        await loadLanessList(this.props.boardId, this);
+    }
+
+    state = {
+        finish: false
     }
   
     render(){
@@ -17,7 +21,7 @@ class TrelloBoard extends Component {
 
         return (
             <div>
-            <Board
+            <AsyncBoard
                 data={lanes}
                 draggable={true}
                 editable={true}
@@ -51,7 +55,9 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
     clear: () => dispatch(clear()),
     addLane: (title, laneId) => dispatch(addLane(title, laneId)),
-    changeLaneName: (title, laneId) => dispatch(changeLaneName(title, laneId))
+    changeLaneName: (title, laneId) => dispatch(changeLaneName(title, laneId)),
+    addCard: (description, laneId, cardId) => dispatch(addCard(description, laneId, cardId)),
+    changeCardName: (title, laneId) => dispatch(changeCardName(title, laneId))
     // deleteLane: id => dispatch(deleteLane(id))
 })
 
@@ -61,8 +67,8 @@ const mapDispatchToProps = (dispatch) => ({
 
 
 
-const loadLanessList = (boardId, that) => {
-    axios.get('https://trollo195.herokuapp.com/boards/getBoard/' + boardId,{data:{}})
+const loadLanessList = async(boardId, that) => {
+    await axios.get('https://trollo195.herokuapp.com/boards/getBoard/' + boardId,{data:{}})
         .then(function(response){
             console.log(response)
             response.data.taskLists.map((taskList) => (
@@ -71,9 +77,35 @@ const loadLanessList = (boardId, that) => {
         .catch(function(error){
             console.log("CREATE BOARD ERROR: " + error)
         })
+    await loadTaskList(boardId, that)
 }
-
-
+// może później wywale to do innych funkcji. na razie lisp xD i tak pewnie api będzie zmieniane, bo do załadowania tablicy potrzeba liczba_kolumn+liczba_zadań*2+1 zapytań xD
+const loadTaskList = async(boardId, that) => { 
+    await axios.get('https://trollo195.herokuapp.com/taskLists/getByBoard/' + boardId,{data:{}}) // taskLists.name/taskListId/tasks[{id}]
+        .then(function(response){ //dostajemy w sumie tylko id zadań #nosense
+            console.log("LISTA ZADAŃ" + response)
+            console.log(response)
+            response.data.taskLists.map((taskList) => ( // pojedyńcza kolumna
+                    taskList.tasks.map((taskId) => ( // pojedyńcze id zadania
+                            // console.log("id " +taskId)
+                            axios.get('https://trollo195.herokuapp.com/tasks/get/' + taskId, {data:{}}) // dostajemy zadanie: taskId, taskListId, description
+                                .then(function(response){
+                                    that.props.addCard(response.data.description, response.data.taskListId, response.data.taskId)
+                                    that.setState({'finish':true})
+                                })
+                                .catch(function(error){
+                                    console.log("GET TASK INFO ERROR: " + error)
+                                    console.log(error)
+                                })
+                        ) 
+                    )
+                )
+            )
+        })
+        .catch(function(error){
+            console.log("GET TASK LISTS ERROR: " + error)
+        })
+}
 
 /////////////////////////////////////////////////////////////////////// EVENTS
 
@@ -106,7 +138,16 @@ const onCardClickEvent = (cardId, metadata, laneId) => {
 
 const onCardAddEvent = (card, laneId) => { // title, description
     console.log('EVENT: onCardAddEvent')
-
+    let that = this
+    axios.post('https://trollo195.herokuapp.com/tasks/add/' + laneId, {
+        description: card.description
+    })
+        .then(function(response){
+            that.props.addCard(response.data.description, response.data.taskListId, response.data.taskId)
+        })
+        .catch(function(error){
+            console.log(error)
+        })
 }
 
 const onCardDeleteEvent = (cardId, laneId) => {

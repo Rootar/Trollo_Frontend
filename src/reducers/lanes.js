@@ -11,17 +11,21 @@ const lanes = (state = [], action) => {
                     cards: []
                 }
             ]
-        // case 'DELETE_LANE':
-        //     const index = state.findIndex(v => v.id === action.id)
-        //     if(index !== -1)
-        //         state.splice(index, 1);
-        //     return state
         case 'CHANGE_LANE_NAME':
-            const index = state.findIndex(v => v.id === action.id)
+                const index = state.findIndex(v => v.id === action.id)
             if(index !== -1)
                 state[index].title = action.title
             return state
-        case '':
+        case 'ADD_CARD':
+            const index2 = state.findIndex(v => v.id === action.laneId)
+            if(index2 !== -1)
+                state[index2].cards.push({
+                    id: action.id,
+                    title: '',
+                    description: action.description
+                })
+            return state
+        case 'CHANGE_CARD_NAME':
         default:
             return state
     }
