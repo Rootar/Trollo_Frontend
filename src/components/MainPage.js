@@ -40,7 +40,7 @@ class MainPage extends Component {
                     that.setState({boards: response.data.boards})
                 })
                 .catch(function(error){
-                    console.log("CREATE BOARD ERROR: " + error)
+                    NotificationManager.error(error.response.data, 'Loading boards list Failed!')
                 })
         }
     }
@@ -97,7 +97,7 @@ class MainPage extends Component {
                 that.setState({boardName: ''})
             })
             .catch(function(error){
-                console.log("CREATE BOARD ERROR: " + error)
+                NotificationManager.error(error.response.data, 'Creating board faild!')
             })
 	}
 

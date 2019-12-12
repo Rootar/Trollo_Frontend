@@ -3,6 +3,7 @@ import AsyncBoard from 'react-trello'
 import { connect } from "react-redux";
 import { addLane, clear, changeLaneName, addCard, changeCardName} from "../actions";
 import axios from 'axios';
+import {NotificationManager} from 'react-notifications';
 
 class TrelloBoard extends Component {
     async componentDidMount(){
@@ -68,7 +69,7 @@ const mapDispatchToProps = (dispatch) => ({
 
 
 const loadLanessList = async(boardId, that) => {
-    await axios.get('https://trollo195.herokuapp.com/boards/getBoard/' + boardId,{data:{}})
+    axios.get('https://trollo195.herokuapp.com/boards/getBoard/' + boardId,{data:{}})
         .then(function(response){
             console.log(response)
             response.data.taskLists.map((taskList) => (
@@ -76,12 +77,13 @@ const loadLanessList = async(boardId, that) => {
         })
         .catch(function(error){
             console.log("CREATE BOARD ERROR: " + error)
+            NotificationManager.error(error.response.data, 'Load board Faild!')
         })
-    await loadTaskList(boardId, that)
+    loadTaskList(boardId, that)
 }
 // może później wywale to do innych funkcji. na razie lisp xD i tak pewnie api będzie zmieniane, bo do załadowania tablicy potrzeba liczba_kolumn+liczba_zadań*2+1 zapytań xD
-const loadTaskList = async(boardId, that) => { 
-    await axios.get('https://trollo195.herokuapp.com/taskLists/getByBoard/' + boardId,{data:{}}) // taskLists.name/taskListId/tasks[{id}]
+const loadTaskList = (boardId, that) => {
+    axios.get('https://trollo195.herokuapp.com/taskLists/getByBoard/' + boardId,{data:{}}) // taskLists.name/taskListId/tasks[{id}]
         .then(function(response){ //dostajemy w sumie tylko id zadań #nosense
             console.log("LISTA ZADAŃ" + response)
             console.log(response)
@@ -94,6 +96,8 @@ const loadTaskList = async(boardId, that) => {
                                     that.setState({'finish':true})
                                 })
                                 .catch(function(error){
+                                    NotificationManager.error(error.response.data, 'Get task info Faild!')
+
                                     console.log("GET TASK INFO ERROR: " + error)
                                     console.log(error)
                                 })
@@ -103,6 +107,8 @@ const loadTaskList = async(boardId, that) => {
             )
         })
         .catch(function(error){
+            NotificationManager.error(error.response.data, 'Get task lists Faild!')
+
             console.log("GET TASK LISTS ERROR: " + error)
         })
 }
@@ -144,8 +150,12 @@ const onCardAddEvent = (card, laneId) => { // title, description
     })
         .then(function(response){
             that.props.addCard(response.data.description, response.data.taskListId, response.data.taskId)
+            NotificationManager.success('', 'Add Card Successful!');
+            
         })
         .catch(function(error){
+            NotificationManager.error(error.response.data, 'Add Card Faild!')
+
             console.log(error)
         })
 }
@@ -165,8 +175,10 @@ const onLaneAddEvent = (params, boardId, that) => { //title: "..."
     })
         .then(function(response){
             that.props.addLane(params.title, response.data.taskListId)
+            NotificationManager.success('', 'Add Lane Successful!');
         })
         .catch(function(error){
+            NotificationManager.error(error.response.data, 'Add Lane Faild!')
             console.log(error)
         })
 }
@@ -184,8 +196,12 @@ const onLaneUpdateEvent = (laneId, data, that) => { //title: "..."
     })
         .then(function(response){
             that.props.changeLaneName(data.title, laneId)
+            NotificationManager.success('', 'Change Lane Name Succeed!');
+
         })
         .catch(function(error){
+            NotificationManager.error(error.response.data, 'Change Lane Name Faild!')
+
             console.log(error)
         })
 }
