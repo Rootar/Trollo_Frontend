@@ -1,14 +1,14 @@
 import React, {Component} from 'react';
-import AsyncBoard from 'react-trello'
+import Board from 'react-trello'
 import { connect } from "react-redux";
 import { addLane, clear, changeLaneName, addCard, changeCardName} from "../actions";
 import axios from 'axios';
 import {NotificationManager} from 'react-notifications';
 
 class TrelloBoard extends Component {
-    async componentDidMount(){
+    componentDidMount(){
         this.props.clear()
-        await loadLanessList(this.props.boardId, this);
+        loadLanessList(this.props.boardId, this);
     }
 
     state = {
@@ -22,7 +22,7 @@ class TrelloBoard extends Component {
 
         return (
             <div>
-            <AsyncBoard
+            <Board
                 data={lanes}
                 draggable={true}
                 editable={true}
@@ -61,8 +61,6 @@ const mapDispatchToProps = (dispatch) => ({
     changeCardName: (title, laneId) => dispatch(changeCardName(title, laneId))
     // deleteLane: id => dispatch(deleteLane(id))
 })
-
-
 
 /////////////////////////////////////////////////////////////////////// 
 
