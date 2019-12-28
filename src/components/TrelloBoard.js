@@ -32,7 +32,7 @@ class TrelloBoard extends Component {
                 handleDragStart={handleDragStartEvent}
                 handleDragEnd={handleDragEndEvent} 
                 handleLaneDragStart={handleLaneDragStartEvent} 
-                handleLaneDragEnd={handleLaneDragEndEvent}
+                handleLaneDragEnd={ (removedIndex, addedIndex, payload) => handleLaneDragEndEvent(removedIndex, addedIndex, payload, this)}
                 onDataChange={onDataChangeEvent}
                 onCardClick={onCardClickEvent}
                 onCardAdd={(card, laneId) => onCardAddEvent(card, laneId, this)}
@@ -70,6 +70,7 @@ const loadLanessList = async(boardId, that) => {
     axios.get('https://trollo195.herokuapp.com/boards/getBoard/' + boardId,{data:{}})
         .then(function(response){
             console.log(response)
+            response.data.taskLists.sort((a, b) => a.position - b.position);
             response.data.taskLists.map((taskList) => (
                 that.props.addLane(taskList.name, taskList.taskListId)))
         })
@@ -127,8 +128,45 @@ const handleLaneDragStartEvent = (laneId) => {
     console.log('EVENT: handleLaneDragStartEvent')
 }
 
-const handleLaneDragEndEvent = (removedIndex, addedIndex, payload) => {
+const handleLaneDragEndEvent = (removedIndex, addedIndex, payload, that) => {
     console.log('EVENT: handleLaneDragEndEvent')
+    console.log("From:" + removedIndex);
+    console.log("To: " + addedIndex);
+    console.log(payload);
+
+    let lanes = that.props.lanes;
+
+    let offset = Math.min(removedIndex, addedIndex);
+    let direction = removedIndex - addedIndex; // < 0: right, > 0: left
+    let changed = [];
+    if(direction > 0) {
+        changed.push(lanes[removedIndex]);
+        for(let i = addedIndex; i < removedIndex; ++i)
+            changed.push(lanes[i]);
+    }
+    else if(direction < 0) {
+        for(let i = removedIndex + 1; i <= addedIndex; ++i)
+            changed.push(lanes[i]);
+        changed.push(lanes[removedIndex]);
+    }
+
+    let newOrder = 
+        lanes.slice(0, Math.min(addedIndex, removedIndex))
+        .concat(changed)
+        .concat(lanes.slice(Math.max(addedIndex, removedIndex) + 1));
+    sendLaneChangePositionRequest(newOrder, that.props.boardId);
+
+}
+
+function sendLaneChangePositionRequest(newOrder, boardId) {
+    console.log("New order:")
+    console.log(newOrder);
+    let address = "https://trollo195.herokuapp.com/taskLists/" + boardId + "/changePositions";
+    let body = [];
+    console.log("address: " + address);
+    newOrder.forEach((lane, index) => body.push({taskListId: lane.id, position: index}));
+    console.log(body);
+    axios.patch(address, body).then((response) => console.log(response));
 }
 
 const onDataChangeEvent = (newData) => {
