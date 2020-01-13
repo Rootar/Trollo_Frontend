@@ -127,7 +127,7 @@ class MainPage extends Component {
                                                 <button
                                                     className="button"
                                                     onClick={() => {
-                                                        this.onSetBoardName(board.boardId);
+                                                        this.onSetBoardName(board.boardId, this);
                                                         close();
                                                     }}>
                                                     Save
@@ -187,17 +187,14 @@ class MainPage extends Component {
         this.props.boardPageCallback(boardId)
     }
 
-    onSetBoardName(boardId){
-        this.setState({newBoardId: boardId.toString()})
-        console.log(this.state.newBoardId + " " + this.state.newBoardName);
-        let that = this
-		axios.post('https://trollo195.herokuapp.com/boards/changeName/' + this.state.newBoardId.toString(),{            
-            name: this.state.newBoardName
+    onSetBoardName(boardId, that){
+		axios.patch('https://trollo195.herokuapp.com/boards/changeName/' + boardId,{            
+            name: that.state.newBoardName
         })
             .then(function(response){
                 NotificationManager.success(that.state.newBoardName, 'Changed Name Succeed!');
                 that.loadBoardsList()
-                that.setState({newBoardName: ''})
+                //that.setState({newBoardName: ''})
             })
             .catch(function(error){
                 NotificationManager.error(error.response.data, 'Change board name faild!')
