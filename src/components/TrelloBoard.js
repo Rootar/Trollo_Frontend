@@ -10,6 +10,8 @@ class TrelloBoard extends Component {
     componentDidMount(){
         this.props.clear()
         loadLanessList(this.props.boardId, this);
+
+        this.setCommentContent = this.setCommentContent.bind(this);
     }
 
     state = {
@@ -59,11 +61,53 @@ class TrelloBoard extends Component {
                     explicabo nemo nam libero ad, doloribus, voluptas rem alias. Vitae?
                     </div>        
                 </div>
-
+                <Popup
+                    trigger={<button className="button"> Upload </button>}
+                    modal>
+                    {close => (
+                        <div className="model">
+                            <a className="close" onClick={close}>
+                                &times;
+                            </a>
+                            <div className="content">
+                                {" "}
+                                <input onChange={ this.setCommentContent } type="file"/>
+                            </div>
+                            <div className="actions">
+                                <button className="button" onClick={() => { close(); }}> Send </button>
+                                <button className="button" onClick={() => { close(); }}> Cancel </button>
+                            </div>
+                        </div>
+                    )}
+                </Popup>
+                <Popup
+                    trigger={<button className="button"> Comment </button>}
+                    modal>
+                    {close => (
+                        <div className="model">
+                            <a className="close" onClick={close}>
+                                &times;
+                            </a>
+                            <div className="content">
+                                {" "}
+                                <input onChange={ this.setCommentContent } type="text" placeholder="type comment... " />
+                            </div>
+                            <div className="actions">
+                                <button className="button" onClick={() => { close(); }}> Send </button>
+                                <button className="button" onClick={() => { close(); }}> Cancel </button>
+                            </div>
+                        </div>
+                    )}
+                </Popup>
             </Popup>
             </div>
         );
-    }  
+    }
+
+    setCommentContent(e) {
+        this.setState({commentContent: e.target.value})
+        // e.target.value is the text from our input
+    }
 }
   
 const mapStateToProps = (state) => ({
@@ -86,8 +130,6 @@ const mapDispatchToProps = (dispatch) => ({
 })
 
 /////////////////////////////////////////////////////////////////////// 
-
-
 
 const loadLanessList = async(boardId, that) => {
     axios.get('https://trollo195.herokuapp.com/boards/getBoard/' + boardId,{data:{}})
