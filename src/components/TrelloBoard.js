@@ -65,7 +65,7 @@ const mapDispatchToProps = (dispatch) => ({
     //zawartość karty
     addComment: (content, commentId) => dispatch(addCard(content, commentId)),
     addAttachment: (name, content, attachementId) => dispatch(addAttachment(name, content, attachementId)),
-    changeComment: () => dispatch(changeComment(content, commentId))
+    changeComment: (content, commentId) => dispatch(changeComment(content, commentId))
 })
 
 /////////////////////////////////////////////////////////////////////// 

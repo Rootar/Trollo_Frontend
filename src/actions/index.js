@@ -33,7 +33,7 @@ export const addComment = (content, commentId) => ({
     content
 })
 
-export const addAttachement = (name, content, attachementId) => ({
+export const addAttachment = (name, content, attachementId) => ({
     type: 'ADD_ATTACHEMENT',
     id: attachementId.toString(),
     name,
