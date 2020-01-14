@@ -26,3 +26,16 @@ export const changeCardName = (title, laneId) => ({
     id: laneId,
     title
 })
+
+export const addComment = (content, commentId) => ({
+    type: 'ADD_COMMENT',
+    id: commentId.toString(),
+    content
+})
+
+export const addAttachement = (name, content, attachementId) => ({
+    type: 'ADD_ATTACHEMENT',
+    id: attachementId.toString(),
+    name,
+    content
+})

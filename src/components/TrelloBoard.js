@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import Board from 'react-trello'
 import { connect } from "react-redux";
-import { addLane, clear, changeLaneName, addCard, changeCardName} from "../actions";
+import { addLane, clear, changeLaneName, addCard, changeCardName, addComment, addAttachment} from "../actions";
 import axios from 'axios';
 import {NotificationManager} from 'react-notifications';
 
@@ -58,8 +58,13 @@ const mapDispatchToProps = (dispatch) => ({
     addLane: (title, laneId) => dispatch(addLane(title, laneId)),
     changeLaneName: (title, laneId) => dispatch(changeLaneName(title, laneId)),
     addCard: (description, laneId, cardId) => dispatch(addCard(description, laneId, cardId)),
-    changeCardName: (title, laneId) => dispatch(changeCardName(title, laneId))
+    changeCardName: (title, laneId) => dispatch(changeCardName(title, laneId)),
     // deleteLane: id => dispatch(deleteLane(id))
+
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    //zawartość karty
+    addComment: (content, commentId) => dispatch(addCard(content, commentId)),
+    addAttachment: (name, content, attachementId) => dispatch(addAttachment(name, content, attachementId)),
 })
 
 /////////////////////////////////////////////////////////////////////// 
@@ -247,6 +252,32 @@ const onLaneClickEvent = (laneId) => {
 
 const onLaneScrollEvent = (requestedPage, laneId) => {
     console.log('EVENT: onLaneScrollEvent')
+}
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//zawartośc karty
+const getComment = (commentId, that) => {
+    axios.get('https://trollo195.herokuapp.com/comments/get/' + commentId)
+        .then(function(response){
+            that.props.addComment(response.data.content, response.data.commentId)
+            NotificationManager.success(commentId, 'Get Comment Succeed!');
+        })
+        .catch(function(error){
+            NotificationManager.error('', 'Change Lane Name Faild!')
+            console.log(error)
+        })
+}
+
+const getAttachment = (attachementId, that) => {
+    axios.get('https://trollo195.herokuapp.com/attachments/get/' + attachementId)
+        .then(function(response){
+            that.props.addComment(response.data.name, response.data.content, response.data.attachementId)
+            NotificationManager.success(attachementId, 'Get Comment Succeed!');
+        })
+        .catch(function(error){
+            NotificationManager.error('', 'Change Lane Name Faild!')
+            console.log(error)
+        })
 }
 
 
