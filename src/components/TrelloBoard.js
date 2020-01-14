@@ -181,6 +181,9 @@ const onDataChangeEvent = (newData) => {
 
 const onCardClickEvent = (cardId, metadata, laneId) => {
     console.log('EVENT: onCardClickEvent')
+    console.log(cardId);
+    console.log(metadata);
+    console.log(laneId);
 }
 
 const onCardAddEvent = (card, laneId, that) => { // title, description
@@ -190,8 +193,7 @@ const onCardAddEvent = (card, laneId, that) => { // title, description
     })
         .then(function(response){
             that.props.addCard(response.data.description, response.data.taskListId, response.data.taskId)
-            NotificationManager.success(response.data.description, 'Add Card Successful!');
-            
+            NotificationManager.success(response.data.description, 'Add Card Successful!');            
         })
         .catch(function(error){
             NotificationManager.error('', 'Add Card Faild!')

@@ -22,7 +22,8 @@ const lanes = (state = [], action) => {
                 state[index2].cards.push({
                     id: action.id,
                     title: '',
-                    description: action.description
+                    description: action.description,
+                    laneId: action.laneId
                 })
             return state
         case 'CHANGE_CARD_NAME':
