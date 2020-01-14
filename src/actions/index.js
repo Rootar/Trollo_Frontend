@@ -1,3 +1,5 @@
+import { NewLineKind } from "typescript"
+
 export const clear = () => ({
     type: 'CLEAR'
 })
@@ -21,27 +23,34 @@ export const addCard = (description, laneId, cardId) => ({
     description
 })
 
-export const changeCardName = (title, laneId) => ({
+export const changeCardName = (title, laneId, cardId) => ({
     type: 'CHANGE_CARD_NAME',
-    id: laneId,
+    id: laneId.toString(),
+    cardId: cardId.toString(),
     title
 })
 
-export const addComment = (content, commentId) => ({
+export const addComment = (content, commentId, cardId, laneId) => ({
     type: 'ADD_COMMENT',
     id: commentId.toString(),
+    cardId: cardId.toString(),
+    laneId: laneId.toString(),
     content
 })
 
-export const addAttachment = (name, content, attachementId) => ({
+export const addAttachment = (name, content, attachementId, cardId, laneId) => ({
     type: 'ADD_ATTACHEMENT',
     id: attachementId.toString(),
+    cardId: cardId.toString(),
+    laneId: laneId.toString(),
     name,
     content
 })
 
-export const changeComment = (content, commentId) => ({
+export const changeComment = (content, commentId, cardId, laneId) => ({
     type: 'CHANGE_COMMENT',
     id: commentId.toString(),
+    cardId: cardId.toString(),
+    laneId: laneId.toString(),
     content
 })

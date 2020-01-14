@@ -23,14 +23,39 @@ const lanes = (state = [], action) => {
                     id: action.id,
                     title: '',
                     description: action.description,
-                    laneId: action.laneId
+                    laneId: action.laneId,
+                    attachments: [],
+                    comments: []
                 })
             return state
         case 'CHANGE_CARD_NAME':
             return state
         case 'ADD_COMMENT':
+                const commentindex2 = state.findIndex(v => v.id === action.laneId)
+                if(commentindex2 !== -1)
+                {
+                    const commentindex3 = state[commentindex2].cards.findIndex(v => v.id === action.cardId)
+                    if(commentindex3 !== -1)
+                    {
+                        state[commentindex2].cards[commentindex3].comments.push({
+                            content: action.content
+                        })
+                    }
+                }
             return state
         case 'ADD_ATTACHEMENT':
+                const attachmentindex2 = state.findIndex(v => v.id === action.laneId)
+                if(attachmentindex2 !== -1)
+                {
+                    const attachmentindex3 = state[attachmentindex2].cards.findIndex(v => v.id === action.cardId)
+                    if(attachmentindex3 !== -1)
+                    {
+                        state[attachmentindex2].cards[attachmentindex3].attachments.push({
+                            name: action.name,
+                            content: action.content
+                        })
+                    }
+                }
             return state
         case 'CHANGE_COMMENT':
             return state

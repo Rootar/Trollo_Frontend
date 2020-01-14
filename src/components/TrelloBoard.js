@@ -58,7 +58,8 @@ class TrelloBoard extends Component {
                     commodi beatae optio voluptatum sed eius cumque, delectus saepe repudiandae
                     explicabo nemo nam libero ad, doloribus, voluptas rem alias. Vitae?
                     </div>        
-                </div>                
+                </div>
+
             </Popup>
             </div>
         );
@@ -74,14 +75,14 @@ const mapDispatchToProps = (dispatch) => ({
     addLane: (title, laneId) => dispatch(addLane(title, laneId)),
     changeLaneName: (title, laneId) => dispatch(changeLaneName(title, laneId)),
     addCard: (description, laneId, cardId) => dispatch(addCard(description, laneId, cardId)),
-    changeCardName: (title, laneId) => dispatch(changeCardName(title, laneId)),
+    changeCardName: (title, laneId, cardId) => dispatch(changeCardName(title, laneId, cardId)),
     // deleteLane: id => dispatch(deleteLane(id))
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     //zawartość karty
-    addComment: (content, commentId) => dispatch(addCard(content, commentId)),
-    addAttachment: (name, content, attachementId) => dispatch(addAttachment(name, content, attachementId)),
-    changeComment: (content, commentId) => dispatch(changeComment(content, commentId))
+    addComment: (content, commentId, cardId, laneId) => dispatch(addComment(content, commentId, cardId, laneId)),
+    addAttachment: (name, content, attachementId, cardId, laneId) => dispatch(addAttachment(name, content, attachementId, cardId, laneId)),
+    changeComment: (content, commentId, cardId, laneId) => dispatch(changeComment(content, commentId, cardId, laneId))
 })
 
 /////////////////////////////////////////////////////////////////////// 
@@ -199,6 +200,8 @@ const onDataChangeEvent = (newData) => {
 const onCardClickEvent = (cardId, metadata, laneId, that) => {
     console.log('EVENT: onCardClickEvent')
     that.setState({'popupOpen':true})
+    
+    //getComment(cardId, lineId, )
     // this.forceUpdate();
 }
 
@@ -274,10 +277,10 @@ const onLaneScrollEvent = (requestedPage, laneId) => {
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //zawartośc karty
-const getComment = (commentId, that) => {
+const getComment = (cardId, laneId, commentId, that) => {
     axios.get('https://trollo195.herokuapp.com/comments/get/' + commentId)
         .then(function(response){
-            that.props.addComment(response.data.content, response.data.commentId)
+            that.props.addComment(response.data.content, response.data.commentId, cardId, laneId)
             NotificationManager.success(commentId, 'Get Comment Succeed!');
         })
         .catch(function(error){
@@ -308,6 +311,7 @@ const createComment = (taskId, content, that) => {
     })
         .then(function(response){
             //tu będzie odświerzenie karty
+            //that.props.createComment(response.data.content, response.data.attachementId, cardId, laneId)
             NotificationManager.success(taskId, 'Add Comment Succeed!');
         })
         .catch(function(error){
@@ -316,10 +320,10 @@ const createComment = (taskId, content, that) => {
         })
 }
 
-const getAttachment = (attachementId, that) => {
+const getAttachment = (cardId, laneId, attachementId, that) => {
     axios.get('https://trollo195.herokuapp.com/attachments/get/' + attachementId)
         .then(function(response){
-            that.props.addAttachment(response.data.name, response.data.content, response.data.attachementId)
+            that.props.addAttachment(response.data.name, response.data.content, response.data.attachementId, cardId, laneId)
             NotificationManager.success(attachementId, 'Get Comment Succeed!');
         })
         .catch(function(error){
@@ -335,6 +339,7 @@ const createAttachement = (taskId, name, content, that) => {
     })
         .then(function(response){
             //tu będzie odświerzenie karty
+            //that.props.createAttachement(response.data.name, response.data.content, response.data.attachementId, cardId, laneId)
             NotificationManager.success(taskId, 'Add Comment Succeed!');
         })
         .catch(function(error){
