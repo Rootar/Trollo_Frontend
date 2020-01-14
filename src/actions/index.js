@@ -39,3 +39,9 @@ export const addAttachement = (name, content, attachementId) => ({
     name,
     content
 })
+
+export const changeComment = (content, commentId) => ({
+    type: 'CHANGE_COMMENT',
+    id: commentId.toString(),
+    content
+})

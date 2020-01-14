@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import Board from 'react-trello'
 import { connect } from "react-redux";
-import { addLane, clear, changeLaneName, addCard, changeCardName, addComment, addAttachment} from "../actions";
+import { addLane, clear, changeLaneName, addCard, changeCardName, addComment, addAttachment, changeComment} from "../actions";
 import axios from 'axios';
 import {NotificationManager} from 'react-notifications';
 
@@ -65,6 +65,7 @@ const mapDispatchToProps = (dispatch) => ({
     //zawartość karty
     addComment: (content, commentId) => dispatch(addCard(content, commentId)),
     addAttachment: (name, content, attachementId) => dispatch(addAttachment(name, content, attachementId)),
+    changeComment: () => dispatch(changeComment(content, commentId))
 })
 
 /////////////////////////////////////////////////////////////////////// 
@@ -265,7 +266,37 @@ const getComment = (commentId, that) => {
             NotificationManager.success(commentId, 'Get Comment Succeed!');
         })
         .catch(function(error){
-            NotificationManager.error('', 'Change Lane Name Faild!')
+            NotificationManager.error('', 'Get Comment Faild!')
+            console.log(error)
+        })
+}
+
+const setComment = (commentId, content, that) => {
+    axios.post('https://trollo195.herokuapp.com/comments/edit/' + commentId, {
+        commentId: commentId,
+        content: content
+    })
+        .then(function(response){
+            that.props.changeComment(response.data.name, response.data.content, response.data.commentId)
+            NotificationManager.success(commentId, 'Edit Comment Succeed!');
+        })
+        .catch(function(error){
+            NotificationManager.error('', 'Edit Comment Faild!')
+            console.log(error)
+        })
+}
+
+const createComment = (taskId, content, that) => {
+    axios.post('https://trollo195.herokuapp.com/comments/add', {
+        taskId: taskId,
+        content: content
+    })
+        .then(function(response){
+            //tu będzie odświerzenie karty
+            NotificationManager.success(taskId, 'Add Comment Succeed!');
+        })
+        .catch(function(error){
+            NotificationManager.error('', 'Add Comment Faild!')
             console.log(error)
         })
 }
@@ -273,16 +304,29 @@ const getComment = (commentId, that) => {
 const getAttachment = (attachementId, that) => {
     axios.get('https://trollo195.herokuapp.com/attachments/get/' + attachementId)
         .then(function(response){
-            that.props.addComment(response.data.name, response.data.content, response.data.attachementId)
+            that.props.addAttachment(response.data.name, response.data.content, response.data.attachementId)
             NotificationManager.success(attachementId, 'Get Comment Succeed!');
         })
         .catch(function(error){
-            NotificationManager.error('', 'Change Lane Name Faild!')
+            NotificationManager.error('', 'Add Attachment Faild!')
             console.log(error)
         })
 }
 
-
+const createAttachement = (taskId, name, content, that) => {
+    axios.post('https://trollo195.herokuapp.com/attachments/task/' + taskId, {
+        name: name,
+        content: content
+    })
+        .then(function(response){
+            //tu będzie odświerzenie karty
+            NotificationManager.success(taskId, 'Add Comment Succeed!');
+        })
+        .catch(function(error){
+            NotificationManager.error('', 'Add Comment Faild!')
+            console.log(error)
+        })
+}
 
 /////////////////////////////////////////////////////////////////////////////////////
 
