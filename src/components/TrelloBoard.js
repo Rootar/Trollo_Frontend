@@ -10,13 +10,16 @@ class TrelloBoard extends Component {
     componentDidMount(){
         this.props.clear()
         loadLanessList(this.props.boardId, this);
-
+        
         this.setCommentContent = this.setCommentContent.bind(this);
+        this.setUploadContent = this.setUploadContent.bind(this);
     }
 
     state = {
         finish: false,
-        popupOpen: false
+        popupOpen: false,
+        currentCard: -1,
+        commentContent: ''
     }
   
     render(){
@@ -71,10 +74,10 @@ class TrelloBoard extends Component {
                             </a>
                             <div className="content">
                                 {" "}
-                                <input onChange={ this.setCommentContent } type="file"/>
+                                <input onChange={ this.setUploadContent } type="file"/>
                             </div>
                             <div className="actions">
-                                <button className="button" onClick={() => { close(); }}> Send </button>
+                                <button className="button" onClick={() => { createAttachement(this.state.cardId); close(); }}> Send </button>
                                 <button className="button" onClick={() => { close(); }}> Cancel </button>
                             </div>
                         </div>
@@ -93,7 +96,7 @@ class TrelloBoard extends Component {
                                 <input onChange={ this.setCommentContent } type="text" placeholder="type comment... " />
                             </div>
                             <div className="actions">
-                                <button className="button" onClick={() => { close(); }}> Send </button>
+                                <button className="button" onClick={() => { createComment(this.state.cardId, this.state.commentContent, this); close(); }}> Send </button>
                                 <button className="button" onClick={() => { close(); }}> Cancel </button>
                             </div>
                         </div>
@@ -106,6 +109,11 @@ class TrelloBoard extends Component {
 
     setCommentContent(e) {
         this.setState({commentContent: e.target.value})
+        // e.target.value is the text from our input
+    }
+
+    setUploadContent(e) {
+        //this.setState({commentContent: e.target.value})
         // e.target.value is the text from our input
     }
 }
@@ -256,7 +264,7 @@ const onDataChangeEvent = (newData) => {
 const onCardClickEvent = (cardId, metadata, laneId, that) => {
     console.log('EVENT: onCardClickEvent')
     that.setState({'popupOpen':true})
-    
+    that.state.cardId = cardId;
     //getComment(cardId, lineId, )
     // this.forceUpdate();
 }
@@ -361,19 +369,26 @@ const setComment = (commentId, content, that) => {
 }
 
 const createComment = (taskId, content, that) => {
-    axios.post('https://trollo195.herokuapp.com/comments/add', {
-        taskId: taskId,
-        content: content
-    })
-        .then(function(response){
-            //tu będzie odświerzenie karty
-            //that.props.createComment(response.data.content, response.data.attachementId, cardId, laneId)
-            NotificationManager.success(taskId, 'Add Comment Succeed!');
+    if(taskId < 0)
+    {
+        console.error("taskId is incorrect");
+    }
+    else
+    {
+        axios.post('https://trollo195.herokuapp.com/comments/add', {
+            taskId: taskId,
+            content: content
         })
-        .catch(function(error){
-            NotificationManager.error('', 'Add Comment Faild!')
-            console.log(error)
-        })
+            .then(function(response){
+                //tu będzie odświerzenie karty
+                //that.props.createComment(response.data.content, response.data.attachementId, cardId, laneId)
+                NotificationManager.success(taskId, 'Add Comment Succeed!');
+            })
+            .catch(function(error){
+                NotificationManager.error('', 'Add Comment Faild!')
+                console.log(error)
+            })
+    }
 }
 
 const getAttachment = (cardId, laneId, attachementId, that) => {
@@ -389,19 +404,26 @@ const getAttachment = (cardId, laneId, attachementId, that) => {
 }
 
 const createAttachement = (taskId, name, content, that) => {
-    axios.post('https://trollo195.herokuapp.com/attachments/task/' + taskId, {
-        name: name,
-        content: content
-    })
-        .then(function(response){
-            //tu będzie odświerzenie karty
-            //that.props.createAttachement(response.data.name, response.data.content, response.data.attachementId, cardId, laneId)
-            NotificationManager.success(taskId, 'Add Comment Succeed!');
+    if(taskId < 0)
+    {
+        console.error("taskId is incorrect");
+    }
+    else
+    {
+        axios.post('https://trollo195.herokuapp.com/attachments/task/' + taskId, {
+            name: name,
+            content: content
         })
-        .catch(function(error){
-            NotificationManager.error('', 'Add Comment Faild!')
-            console.log(error)
-        })
+            .then(function(response){
+                //tu będzie odświerzenie karty
+                //that.props.createAttachement(response.data.name, response.data.content, response.data.attachementId, cardId, laneId)
+                NotificationManager.success(taskId, 'Add Comment Succeed!');
+            })
+            .catch(function(error){
+                NotificationManager.error('', 'Add Comment Faild!')
+                console.log(error)
+            })
+    }
 }
 
 /////////////////////////////////////////////////////////////////////////////////////
