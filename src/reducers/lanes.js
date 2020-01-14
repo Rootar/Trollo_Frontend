@@ -27,6 +27,13 @@ const lanes = (state = [], action) => {
                 })
             return state
         case 'CHANGE_CARD_NAME':
+            return state
+        case 'ADD_COMMENT':
+            return state
+        case 'ADD_ATTACHEMENT':
+            return state
+        case 'CHANGE_COMMENT':
+            return state
         default:
             return state
     }

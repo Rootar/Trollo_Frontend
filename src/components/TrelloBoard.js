@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import Board from 'react-trello'
 import { connect } from "react-redux";
-import { addLane, clear, changeLaneName, addCard, changeCardName} from "../actions";
+import { addLane, clear, changeLaneName, addCard, changeCardName, addComment, addAttachment, changeComment} from "../actions";
 import axios from 'axios';
 import {NotificationManager} from 'react-notifications';
 import Popup from "reactjs-popup";
@@ -74,8 +74,14 @@ const mapDispatchToProps = (dispatch) => ({
     addLane: (title, laneId) => dispatch(addLane(title, laneId)),
     changeLaneName: (title, laneId) => dispatch(changeLaneName(title, laneId)),
     addCard: (description, laneId, cardId) => dispatch(addCard(description, laneId, cardId)),
-    changeCardName: (title, laneId) => dispatch(changeCardName(title, laneId))
+    changeCardName: (title, laneId) => dispatch(changeCardName(title, laneId)),
     // deleteLane: id => dispatch(deleteLane(id))
+
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    //zawartość karty
+    addComment: (content, commentId) => dispatch(addCard(content, commentId)),
+    addAttachment: (name, content, attachementId) => dispatch(addAttachment(name, content, attachementId)),
+    changeComment: (content, commentId) => dispatch(changeComment(content, commentId))
 })
 
 /////////////////////////////////////////////////////////////////////// 
@@ -266,7 +272,76 @@ const onLaneScrollEvent = (requestedPage, laneId) => {
     console.log('EVENT: onLaneScrollEvent')
 }
 
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//zawartośc karty
+const getComment = (commentId, that) => {
+    axios.get('https://trollo195.herokuapp.com/comments/get/' + commentId)
+        .then(function(response){
+            that.props.addComment(response.data.content, response.data.commentId)
+            NotificationManager.success(commentId, 'Get Comment Succeed!');
+        })
+        .catch(function(error){
+            NotificationManager.error('', 'Get Comment Faild!')
+            console.log(error)
+        })
+}
 
+const setComment = (commentId, content, that) => {
+    axios.post('https://trollo195.herokuapp.com/comments/edit/' + commentId, {
+        commentId: commentId,
+        content: content
+    })
+        .then(function(response){
+            that.props.changeComment(response.data.name, response.data.content, response.data.commentId)
+            NotificationManager.success(commentId, 'Edit Comment Succeed!');
+        })
+        .catch(function(error){
+            NotificationManager.error('', 'Edit Comment Faild!')
+            console.log(error)
+        })
+}
+
+const createComment = (taskId, content, that) => {
+    axios.post('https://trollo195.herokuapp.com/comments/add', {
+        taskId: taskId,
+        content: content
+    })
+        .then(function(response){
+            //tu będzie odświerzenie karty
+            NotificationManager.success(taskId, 'Add Comment Succeed!');
+        })
+        .catch(function(error){
+            NotificationManager.error('', 'Add Comment Faild!')
+            console.log(error)
+        })
+}
+
+const getAttachment = (attachementId, that) => {
+    axios.get('https://trollo195.herokuapp.com/attachments/get/' + attachementId)
+        .then(function(response){
+            that.props.addAttachment(response.data.name, response.data.content, response.data.attachementId)
+            NotificationManager.success(attachementId, 'Get Comment Succeed!');
+        })
+        .catch(function(error){
+            NotificationManager.error('', 'Add Attachment Faild!')
+            console.log(error)
+        })
+}
+
+const createAttachement = (taskId, name, content, that) => {
+    axios.post('https://trollo195.herokuapp.com/attachments/task/' + taskId, {
+        name: name,
+        content: content
+    })
+        .then(function(response){
+            //tu będzie odświerzenie karty
+            NotificationManager.success(taskId, 'Add Comment Succeed!');
+        })
+        .catch(function(error){
+            NotificationManager.error('', 'Add Comment Faild!')
+            console.log(error)
+        })
+}
 
 /////////////////////////////////////////////////////////////////////////////////////
 
