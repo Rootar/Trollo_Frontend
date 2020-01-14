@@ -115,6 +115,8 @@ const loadTaskList = (boardId, that) => {
                             axios.get('https://trollo195.herokuapp.com/tasks/get/' + taskId, {data:{}}) // dostajemy zadanie: taskId, taskListId, description
                                 .then(function(response){
                                     that.props.addCard(response.data.description, response.data.taskListId, response.data.taskId)
+                                    loadCommentsList(taskList.taskListId, taskId, response.data.comments, that);
+                                    loadAttachementsList(taskList.taskListId, taskId, response.data.attachments, that);
                                     that.setState({'finish':true})
                                 })
                                 .catch(function(error){
@@ -133,6 +135,18 @@ const loadTaskList = (boardId, that) => {
 
             console.log("GET TASK LISTS ERROR: " + error)
         })
+}
+
+const loadCommentsList = (listId, cardId, comments, that) => {
+    comments.map((comment) => 
+        getComment(cardId, listId, comment.commentId, that)
+    )
+}
+
+const loadAttachementsList = (listId, cardId, attachements, that) => {
+    attachements.map((attachement) => 
+        getAttachment(cardId, listId, attachement.attachementId, that)
+    )
 }
 
 /////////////////////////////////////////////////////////////////////// EVENTS
