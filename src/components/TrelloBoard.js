@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 import { addLane, clear, changeLaneName, addCard, changeCardName} from "../actions";
 import axios from 'axios';
 import {NotificationManager} from 'react-notifications';
+import Popup from "reactjs-popup";
 
 class TrelloBoard extends Component {
     componentDidMount(){
@@ -12,7 +13,8 @@ class TrelloBoard extends Component {
     }
 
     state = {
-        finish: false
+        finish: false,
+        popupOpen: false
     }
   
     render(){
@@ -34,7 +36,7 @@ class TrelloBoard extends Component {
                 handleLaneDragStart={handleLaneDragStartEvent} 
                 handleLaneDragEnd={ (removedIndex, addedIndex, payload) => handleLaneDragEndEvent(removedIndex, addedIndex, payload, this)}
                 onDataChange={onDataChangeEvent}
-                onCardClick={onCardClickEvent}
+                onCardClick={(cardId, metadata, laneId) => onCardClickEvent(cardId, metadata, laneId, this)}
                 onCardAdd={(card, laneId) => onCardAddEvent(card, laneId, this)}
                 onCardDelete={onCardDeleteEvent}
                 onCardMoveAcrossLanes={onCardMoveAcrossLanesEvent}
@@ -44,6 +46,20 @@ class TrelloBoard extends Component {
                 onLaneClick={onLaneClickEvent}
                 onLaneScroll={onLaneScrollEvent}
             />
+            <Popup open={this.state.popupOpen}  onClose={() => onClosePopupEvent(this)}>                
+                <div className="modal">                    
+                    <div className="content">
+                    {" "}
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Atque, a nostrum.
+                    Dolorem, repellat quidem ut, minima sint vel eveniet quibusdam voluptates
+                    delectus doloremque, explicabo tempore dicta adipisci fugit amet dignissimos?
+                    <br />
+                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consequatur sit
+                    commodi beatae optio voluptatum sed eius cumque, delectus saepe repudiandae
+                    explicabo nemo nam libero ad, doloribus, voluptas rem alias. Vitae?
+                    </div>        
+                </div>                
+            </Popup>
             </div>
         );
     }  
@@ -174,11 +190,10 @@ const onDataChangeEvent = (newData) => {
     // console.log(newData)
 }
 
-const onCardClickEvent = (cardId, metadata, laneId) => {
+const onCardClickEvent = (cardId, metadata, laneId, that) => {
     console.log('EVENT: onCardClickEvent')
-    console.log(cardId);
-    console.log(metadata);
-    console.log(laneId);
+    that.setState({'popupOpen':true})
+    // this.forceUpdate();
 }
 
 const onCardAddEvent = (card, laneId, that) => { // title, description
@@ -255,6 +270,11 @@ const onLaneScrollEvent = (requestedPage, laneId) => {
 
 /////////////////////////////////////////////////////////////////////////////////////
 
+const onClosePopupEvent = (that) =>{
+    that.setState({'popupOpen':false})
+}
+
+//////////////////////////////////////////////////////////////////////////////////////
 
 
 export default connect(
