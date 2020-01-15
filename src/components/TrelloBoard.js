@@ -1,11 +1,56 @@
 import React, {Component} from 'react';
 import Board from 'react-trello'
-import { withStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import { connect } from "react-redux";
 import { addLane, clear, changeLaneName, addCard, changeCardName, addComment, addAttachment, changeComment} from "../actions";
 import axios from 'axios';
 import {NotificationManager} from 'react-notifications';
 import Popup from "reactjs-popup";
+import EditIcon from '@material-ui/icons/Edit';
+import DeleteIcon from '@material-ui/icons/Delete';
+import GetAppIcon from '@material-ui/icons/GetApp';
+import { debuglog } from 'util';
+
+
+const styles = makeStyles(theme => ({
+    editicon:{
+        marginTop: "20px",
+        marginLeft: "10px"
+    },
+    modal:{
+        size: "12px"
+    },
+    header:{
+        width: "100%",
+        size: "18px",
+        align: "center",
+        padding: "5px",
+    },
+    content:{
+        width: "100%",
+        padding: "10px 5px"
+    },
+    actions:{
+        width: "100%",
+        padding: "10px 5px",
+        margin: "auto",
+        align: "center"
+    },
+    close:{
+        cursor: "pointer",
+        position: "absolute",
+        display: "block",
+        padding: "2px 5px",
+        right: "-10px",
+        top: "-10px",
+        size: "24px",
+        background: "#ffffff",
+        border: "1px solid #cfcece",
+    },
+    attcontent: {
+        display: "none",
+    }
+}));
 
 class TrelloBoard extends Component {
     
@@ -21,12 +66,12 @@ class TrelloBoard extends Component {
         finish: false,
         popupOpen: false,
         currentCard: -1,
-        commentContent: ''
+        commentContent: '',
+        attachmentName: '',
+        attachmentContent: '',
     }
   
     render(){
-        //const {classes} = this.styles
-        
         let lanes = {
             lanes: this.props.lanes
         }
@@ -56,60 +101,76 @@ class TrelloBoard extends Component {
                 onLaneScroll={onLaneScrollEvent}
             />
             <Popup open={this.state.popupOpen}  onClose={() => onClosePopupEvent(this)}>                
-                <div className="modal">                    
-                    <div className="content">
-                    {" "}
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Atque, a nostrum.
-                    Dolorem, repellat quidem ut, minima sint vel eveniet quibusdam voluptates
-                    delectus doloremque, explicabo tempore dicta adipisci fugit amet dignissimos?
-                    <br />
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consequatur sit
-                    commodi beatae optio voluptatum sed eius cumque, delectus saepe repudiandae
-                    explicabo nemo nam libero ad, doloribus, voluptas rem alias. Vitae?
-                    </div>        
-                </div>
-                <div className="upload">
-                    <Popup
-                        trigger={<button className="button"> Upload </button>}
-                        modal>
-                        {close => (
-                            <div className="model">
-                                <a className="close" onClick={close}>
-                                    &times;
-                                </a>
-                                <div className="content">
-                                    {" "}
-                                    <input onChange={ this.setUploadContent } type="file"/>
-                                </div>
-                                <div className="actions">
-                                    <button className="button" onClick={() => { createAttachement(this.state.cardId); close(); }}> Send </button>
-                                    <button className="button" onClick={() => { close(); }}> Cancel </button>
-                                </div>
-                            </div>
-                        )}
-                    </Popup>
-                </div>
-                <div>
-                    <Popup
-                        trigger={<button className="button"> Comment </button>}
-                        modal>
-                        {close => (
-                            <div className="model">
-                                <a className="close" onClick={close}>
-                                    &times;
-                                </a>
-                                <div className="content">
-                                    {" "}
-                                    <input onChange={ this.setCommentContent } type="text" placeholder="type comment... " />
-                                </div>
-                                <div className="actions">
-                                    <button className="button" onClick={() => { createComment(this.state.cardId, this.state.commentContent, this); close(); }}> Send </button>
-                                    <button className="button" onClick={() => { close(); }}> Cancel </button>
-                                </div>
-                            </div>
-                        )}
-                    </Popup>
-                </div>
+                {close => (
+                    <div className="modal">
+                        <a className={styles.close} onClick={close}>&times;</a>               
+                        <div className="content">
+                            {" "}
+                            <br/>
+                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Atque, a nostrum.
+                            Dolorem, repellat quidem ut, minima sint vel eveniet quibusdam voluptates
+                            delectus doloremque, explicabo tempore dicta adipisci fugit amet dignissimos?
+                            <br />
+                            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consequatur sit
+                            commodi beatae optio voluptatum sed eius cumque, delectus saepe repudiandae
+                            explicabo nemo nam libero ad, doloribus, voluptas rem alias. Vitae?
+                        </div>
+                        <div className="attachement">
+                            Name
+                            <button className="button" onClick={() => { downloadAttachemnt(); }}> <GetAppIcon/> </button>
+                            <button className="button" onClick={() => { removeAttachement(); }}> <DeleteIcon/> </button>
+                        </div>
+                        <div id="attachementContent" className="attcontent"></div>
+                        <div className="upload">
+                            <Popup
+                                trigger={<button className="button"> Upload </button>} modal>
+                                {close => (
+                                    <div className="model">
+                                        <a className={styles.close} onClick={close}>&times;</a>
+                                        <div className="content">{" "} <input id="files" onChange={ this.setUploadContent } type="file"/></div>
+                                        <div className="actions">
+                                            <button className="button" onClick={() => { createAttachement(this.state.cardId, this.state.attachmentName, document.getElementById('attachementContent').textContent, this); close(); }}> Send </button>
+                                            <button className="button" onClick={() => { close(); }}> Cancel </button>
+                                        </div>
+                                    </div>
+                                )}
+                            </Popup>
+                        </div>
+                        <div>
+                            <Popup
+                                trigger={<button className="button"> Comment </button>} modal>
+                                {close => (
+                                    <div className="model">
+                                        <a className={styles.close} onClick={close}>&times;</a>
+                                        <div className="content">{" "}<input onChange={ this.setCommentContent } type="text" placeholder="type comment... " /></div>
+                                        <div className="actions">
+                                            <button className="button" onClick={() => { createComment(this.state.cardId, this.state.commentContent, this); close(); }}> Send </button>
+                                            <button className="button" onClick={() => { close(); }}> Cancel </button>
+                                        </div>
+                                    </div>
+                                )}
+                            </Popup>
+                        </div>
+                        <div className="comment">
+                            content of comment
+                            <br/>
+                            <Popup
+                                trigger={<button className="button"> <EditIcon/> </button>} modal>
+                                {close => (
+                                    <div className="model">
+                                        <a className={styles.close} onClick={close}>&times;</a>
+                                        <div className="content">{" "}<input onChange={ this.setCommentContent } type="text" placeholder="type comment... " /></div>
+                                        <div className="actions">
+                                            <button className="button" onClick={() => { setComment(this.state.cardId, this.state.commentContent, this); close(); }}> Send </button>
+                                            <button className="button" onClick={() => { close(); }}> Cancel </button>
+                                        </div>
+                                    </div>
+                                )}
+                            </Popup>
+                        </div>
+                    </div>
+                    
+                )}
             </Popup>
             </div>
         );
@@ -121,9 +182,30 @@ class TrelloBoard extends Component {
     }
 
     setUploadContent(e) {
-        //this.setState({commentContent: e.target.value})
-        // e.target.value is the text from our input
+        var name = e.target.value.split("\\");
+        this.setState({attachmentName: name[name.length - 1]})
+        //console.log(name[name.length - 1])
+
+        var files = document.getElementById('files').files;
+        if (!files.length) {
+            alert('Please select a file!');
+            return;
+        }
+
+        var file = files[0];
+
+        var reader = new FileReader();
+
+        reader.onloadend = function(e) {
+            if (e.target.readyState == FileReader.DONE) {
+                document.getElementById('attachementContent').textContent = e.target.result;
+                //that.setState({attachmentContent: e.target.result})
+            }
+        };
+
+        reader.readAsBinaryString(file)
     }
+
 }
   
 const mapStateToProps = (state) => ({
@@ -196,9 +278,9 @@ const loadTaskList = (boardId, that) => {
 }
 
 const loadCommentsList = (listId, cardId, comments, that) => {
-    comments.map((comment) => 
-        getComment(cardId, listId, comment.commentId, that)
-    )
+    comments.map((comment) => {
+        getComment(cardId, listId, comment, that)
+    })
 }
 
 const loadAttachementsList = (listId, cardId, attachements, that) => {
@@ -350,7 +432,8 @@ const onLaneScrollEvent = (requestedPage, laneId) => {
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //zawartośc karty
 const getComment = (cardId, laneId, commentId, that) => {
-    axios.get('https://trollo195.herokuapp.com/comments/get/' + commentId)
+    console.log(cardId + " " + laneId + " " + commentId)
+    axios.get('https://trollo195.herokuapp.com/comments/get/' + commentId.toString())
         .then(function(response){
             that.props.addComment(response.data.content, response.data.commentId, cardId, laneId)
             NotificationManager.success(commentId, 'Get Comment Succeed!');
@@ -383,6 +466,7 @@ const createComment = (taskId, content, that) => {
     }
     else
     {
+        console.log(taskId, content)
         axios.post('https://trollo195.herokuapp.com/comments/add', {
             taskId: taskId,
             content: content
@@ -403,10 +487,10 @@ const getAttachment = (cardId, laneId, attachementId, that) => {
     axios.get('https://trollo195.herokuapp.com/attachments/get/' + attachementId)
         .then(function(response){
             that.props.addAttachment(response.data.name, response.data.content, response.data.attachementId, cardId, laneId)
-            NotificationManager.success(attachementId, 'Get Comment Succeed!');
+            NotificationManager.success(attachementId, 'Get Attachment Succeed!');
         })
         .catch(function(error){
-            NotificationManager.error('', 'Add Attachment Faild!')
+            NotificationManager.error('', 'Get Attachment Faild!')
             console.log(error)
         })
 }
@@ -425,13 +509,21 @@ const createAttachement = (taskId, name, content, that) => {
             .then(function(response){
                 //tu będzie odświerzenie karty
                 //that.props.createAttachement(response.data.name, response.data.content, response.data.attachementId, cardId, laneId)
-                NotificationManager.success(taskId, 'Add Comment Succeed!');
+                NotificationManager.success(taskId, 'Create Attachement Succeed!');
             })
             .catch(function(error){
-                NotificationManager.error('', 'Add Comment Faild!')
+                NotificationManager.error('', 'Create Attachement Faild!')
                 console.log(error)
             })
     }
+}
+
+const downloadAttachemnt = (that) => {
+
+}
+
+const removeAttachement = (that) => {
+
 }
 
 /////////////////////////////////////////////////////////////////////////////////////
