@@ -168,7 +168,7 @@ class TrelloBoard extends Component {
                                             <a className={classes.close} onClick={close}>&times;</a>
                                             <div className={classes.content}>{" "}<input onChange={ this.setCommentContent } type="text" placeholder="type comment... " /></div>
                                             <div className={classes.actions}>
-                                                <button className="button" onClick={() => { setComment(this.state.cardId, this.state.commentContent, this); close(); }}> Send </button>
+                                                <button className="button" onClick={() => { setComment(comment.id, this.state.commentContent, this); close(); }}> Send </button>
                                                 <button className="button" onClick={() => { close(); }}> Cancel </button>
                                             </div>
                                         </div>
@@ -451,8 +451,8 @@ const getComment = (cardId, laneId, commentId, that) => {
 }
 
 const setComment = (commentId, content, that) => {
-    axios.post('https://trollo195.herokuapp.com/comments/edit/' + commentId, {
-        commentId: commentId,
+    axios.post('https://trollo195.herokuapp.com/comments/edit', {
+        commentId: commentId.toString(),
         content: content
     })
         .then(function(response){
@@ -472,7 +472,6 @@ const createComment = (taskId, content, that) => {
     }
     else
     {
-        console.log(taskId, content)
         axios.post('https://trollo195.herokuapp.com/comments/add', {
             taskId: taskId,
             content: content
