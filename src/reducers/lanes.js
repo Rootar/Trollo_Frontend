@@ -45,21 +45,32 @@ const lanes = (state = [], action) => {
                 }
             return state
         case 'ADD_ATTACHEMENT':
-                const attachmentindex2 = state.findIndex(v => v.id === action.laneId)
-                if(attachmentindex2 !== -1)
+            const attachmentindex2 = state.findIndex(v => v.id === action.laneId)
+            if(attachmentindex2 !== -1)
+            {
+                const attachmentindex3 = state[attachmentindex2].cards.findIndex(v => v.id === action.cardId)
+                if(attachmentindex3 !== -1)
                 {
-                    const attachmentindex3 = state[attachmentindex2].cards.findIndex(v => v.id === action.cardId)
-                    if(attachmentindex3 !== -1)
-                    {
-                        state[attachmentindex2].cards[attachmentindex3].attachments.push({
-                            id: action.id,
-                            name: action.name,
-                            content: action.content
-                        })
-                    }
+                    state[attachmentindex2].cards[attachmentindex3].attachments.push({
+                        id: action.id,
+                        name: action.name,
+                        content: action.content
+                    })
                 }
+            }
             return state
         case 'CHANGE_COMMENT':
+            return state
+        case 'ADD_TIME':
+            const timeindex2 = state.findIndex(v => v.id === action.laneId)
+            if(timeindex2 !== -1)
+            {
+                const timeindex3 = state[timeindex2].cards.findIndex(v => v.id === action.cardId)
+                if(timeindex3 !== -1)
+                {
+                    state[timeindex2].cards[timeindex3].time = action.time
+                }
+            }
             return state
         default:
             return state

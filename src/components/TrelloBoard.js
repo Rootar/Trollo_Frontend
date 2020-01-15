@@ -3,7 +3,7 @@ import Board from 'react-trello'
 import { withStyles } from '@material-ui/core/styles';
 
 import { connect } from "react-redux";
-import { addLane, clear, changeLaneName, addCard, changeCardName, addComment, addAttachment, changeComment} from "../actions";
+import { addLane, clear, changeLaneName, addCard, changeCardName, addComment, addAttachment, changeComment, addTime} from "../actions";
 import axios from 'axios';
 import {NotificationManager} from 'react-notifications';
 import Popup from "reactjs-popup";
@@ -136,7 +136,7 @@ class TrelloBoard extends Component {
                                     id="datetime-local"
                                     label="Next appointment"
                                     type="datetime-local"
-                                    defaultValue="2017-05-24T10:30:00"
+                                    // defaultValue="2017-05-24T10:30:00"
                                     value = {this.state.time}
                                     className={classes.textField}
                                     name='time'
@@ -254,9 +254,9 @@ class TrelloBoard extends Component {
         this.setState({[e.target.name]: e.target.value});
         console.log(e.target.value);
         
-        axios.patch('https://trollo195.herokuapp.com/tasks/edit', {
+        axios.post('https://trollo195.herokuapp.com/tasks/edit', {
             taskId: this.state.currentCard,
-            description: /* tutaj trzeba czegoś mondrego lol - opis karty */null,
+            description: this.props.lanes[this.state.currentLaneIndex].cards[this.state.currentCardIndex].description,
             date: e.target.value + ':00'
         })
             .then(function(response){
@@ -287,6 +287,7 @@ const mapDispatchToProps = (dispatch) => ({
     changeLaneName: (title, laneId) => dispatch(changeLaneName(title, laneId)),
     addCard: (description, laneId, cardId) => dispatch(addCard(description, laneId, cardId)),
     changeCardName: (title, laneId, cardId) => dispatch(changeCardName(title, laneId, cardId)),
+    addTime: (time, cardId, laneId) => dispatch(addTime(time, cardId, laneId)),
     // deleteLane: id => dispatch(deleteLane(id))
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -324,6 +325,7 @@ const loadTaskList = (boardId, that) => {
                             axios.get('https://trollo195.herokuapp.com/tasks/get/' + taskId, {data:{}}) // dostajemy zadanie: taskId, taskListId, description
                                 .then(function(response){
                                     that.props.addCard(response.data.description, response.data.taskListId, response.data.taskId)
+                                    that.props.addTime(response.data.date, response.data.taskId, response.data.taskListId)
                                     loadCommentsList(taskList.taskListId, taskId, response.data.comments, that);
                                     loadAttachmentsList(taskList.taskListId, taskId, response.data.attachments, that);
                                     that.setState({'finish':true})
@@ -425,7 +427,7 @@ const onCardClickEvent = (cardId, metadata, laneId, that) => {
     that.setState({'popupOpen':true})
     that.setState({'currentCard':cardId})
     that.setState({'currentLane':laneId})
-
+    
     for(var i = 0; i < that.props.lanes.length; ++i)
     {
         if(that.props.lanes[i].id == laneId)
@@ -442,6 +444,7 @@ const onCardClickEvent = (cardId, metadata, laneId, that) => {
             break;
         }
     }
+    that.setState({'time': that.props.lanes[that.state.currentLaneIndex].cards[that.state.currentCardIndex].time})
 }
 
 const onCardAddEvent = (card, laneId, that) => { // title, description

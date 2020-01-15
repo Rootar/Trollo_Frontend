@@ -54,3 +54,10 @@ export const changeComment = (content, commentId, cardId, laneId) => ({
     laneId: laneId.toString(),
     content
 })
+
+export const addTime = (time, cardId, laneId) => ({
+    type: 'ADD_TIME',
+    cardId: cardId.toString(),
+    laneId: laneId.toString(),
+    time,
+})
