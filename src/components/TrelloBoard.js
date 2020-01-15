@@ -255,10 +255,6 @@ const loadTaskList = (boardId, that) => {
                             axios.get('https://trollo195.herokuapp.com/tasks/get/' + taskId, {data:{}}) // dostajemy zadanie: taskId, taskListId, description
                                 .then(function(response){
                                     that.props.addCard(response.data.description, response.data.taskListId, response.data.taskId)
-                                    // console.log("comm")
-                                    // console.log(response.data.comments)
-                                    // console.log("atta")
-                                    // console.log(response.data.attachments)
                                     loadCommentsList(taskList.taskListId, taskId, response.data.comments, that);
                                     loadAttachementsList(taskList.taskListId, taskId, response.data.attachments, that);
                                     that.setState({'finish':true})
@@ -436,11 +432,10 @@ const onLaneScrollEvent = (requestedPage, laneId) => {
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //zawartośc karty
 const getComment = (cardId, laneId, commentId, that) => {
-    console.log(cardId + " " + laneId + " " + commentId)
     axios.get('https://trollo195.herokuapp.com/comments/get/' + commentId.toString(),{data:{}})
         .then(function(response){
             that.props.addComment(response.data.content, response.data.commentId, cardId, laneId)
-            NotificationManager.success(commentId, 'Get Comment Succeed!');
+            NotificationManager.success('', 'Get Comment Succeed!');
         })
         .catch(function(error){
             NotificationManager.error('', 'Get Comment Faild!')
@@ -455,7 +450,7 @@ const setComment = (commentId, content, that) => {
     })
         .then(function(response){
             that.props.changeComment(response.data.name, response.data.content, response.data.commentId)
-            NotificationManager.success(commentId, 'Edit Comment Succeed!');
+            NotificationManager.success('', 'Edit Comment Succeed!');
         })
         .catch(function(error){
             NotificationManager.error('', 'Edit Comment Faild!')
