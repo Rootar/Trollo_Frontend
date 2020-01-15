@@ -38,6 +38,7 @@ const lanes = (state = [], action) => {
                     if(commentindex3 !== -1)
                     {
                         state[commentindex2].cards[commentindex3].comments.push({
+                            id: action.id,
                             content: action.content
                         })
                     }
@@ -51,6 +52,7 @@ const lanes = (state = [], action) => {
                     if(attachmentindex3 !== -1)
                     {
                         state[attachmentindex2].cards[attachmentindex3].attachments.push({
+                            id: action.id,
                             name: action.name,
                             content: action.content
                         })
