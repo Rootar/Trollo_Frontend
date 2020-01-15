@@ -11,7 +11,7 @@ import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
 import GetAppIcon from '@material-ui/icons/GetApp';
 import { debuglog } from 'util';
-
+import TextField from '@material-ui/core/TextField';
 
 const styles = theme => ({
     editicon:{
@@ -51,6 +51,15 @@ const styles = theme => ({
     attContent: {
         display: "none",
     },
+    container: {
+        display: 'flex',
+        flexWrap: 'wrap',
+    },
+    textField: {
+        marginLeft: theme.spacing(1),
+        marginRight: theme.spacing(1),
+        width: 200,
+    },
     upload:{
 
     }
@@ -64,6 +73,7 @@ class TrelloBoard extends Component {
         
         this.setCommentContent = this.setCommentContent.bind(this);
         this.setUploadContent = this.setUploadContent.bind(this);
+        this.onChange = this.onChange.bind(this);
     }
 
     state = {
@@ -74,6 +84,7 @@ class TrelloBoard extends Component {
         commentContent: '',
         attachmentName: '',
         attachmentContent: '',
+        time: '2017-05-24T10:30:00'
     }
   
     render(){
@@ -82,6 +93,12 @@ class TrelloBoard extends Component {
         let lanes = {
             lanes: this.props.lanes
         }
+
+        // const [selectedDate, setSelectedDate] = React.useState(new Date('2014-08-18T21:11:54'));
+
+        // const handleDateChange = date => {
+        //     setSelectedDate(date);
+        // };
 
         return (
             <div>
@@ -110,7 +127,24 @@ class TrelloBoard extends Component {
             <Popup open={this.state.popupOpen}  onClose={() => onClosePopupEvent(this)}>                
                 {close => (
                     <div className="modal">
-                        <a className={classes.close} onClick={close}>&times;</a>               
+                        <a className={classes.close} onClick={close}>&times;</a>
+                        <div>
+                            <form className={classes.container} noValidate>
+                                <TextField
+                                    id="datetime-local"
+                                    label="Next appointment"
+                                    type="datetime-local"
+                                    defaultValue="2017-05-24T10:30:00"
+                                    value = {this.state.time}
+                                    className={classes.textField}
+                                    name='time'
+                                    InputLabelProps={{
+                                        shrink: true,
+                                    }}
+                                    onChange = {this.onChange}
+                                />
+                            </form>
+                        </div>
                         <div className={classes.header}> {lanes.lanes[0].cards[0].name}</div>
                         <div className={classes.content}>
                             {" "}
@@ -214,8 +248,35 @@ class TrelloBoard extends Component {
         reader.readAsBinaryString(file)
     }
 
+    onChange(e) {
+        this.setState({[e.target.name]: e.target.value});
+        console.log(e.target.value);
+        
+        axios.patch('https://trollo195.herokuapp.com/tasks/edit', {
+            taskId: this.state.currentCard,
+            description: /* tutaj trzeba czegoś mondrego lol - opis karty */null,
+            date: e.target.value + ':00'
+        })
+            .then(function(response){
+                that.props.changeLaneName(data.title, laneId)
+                NotificationManager.success(data.title, 'Change Lane Name Succeed!');
+
+            })
+            .catch(function(error){
+                NotificationManager.error('', 'Change Lane Name Faild!')
+
+                console.log(error)
+            })
+    }
+
 }
   
+
+// const onTimeChange = (that) => {
+//     console.log('ZMIANA CZASU')
+//     that.setState({'time': })
+// }
+
 const mapStateToProps = (state) => ({
     lanes: state.lanes
 })
