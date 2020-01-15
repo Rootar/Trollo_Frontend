@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import Board from 'react-trello'
+import { withStyles } from '@material-ui/core/styles';
 import { connect } from "react-redux";
 import { addLane, clear, changeLaneName, addCard, changeCardName, addComment, addAttachment, changeComment} from "../actions";
 import axios from 'axios';
@@ -7,6 +8,7 @@ import {NotificationManager} from 'react-notifications';
 import Popup from "reactjs-popup";
 
 class TrelloBoard extends Component {
+    
     componentDidMount(){
         this.props.clear()
         loadLanessList(this.props.boardId, this);
@@ -23,6 +25,8 @@ class TrelloBoard extends Component {
     }
   
     render(){
+        //const {classes} = this.styles
+        
         let lanes = {
             lanes: this.props.lanes
         }
@@ -64,44 +68,48 @@ class TrelloBoard extends Component {
                     explicabo nemo nam libero ad, doloribus, voluptas rem alias. Vitae?
                     </div>        
                 </div>
-                <Popup
-                    trigger={<button className="button"> Upload </button>}
-                    modal>
-                    {close => (
-                        <div className="model">
-                            <a className="close" onClick={close}>
-                                &times;
-                            </a>
-                            <div className="content">
-                                {" "}
-                                <input onChange={ this.setUploadContent } type="file"/>
+                <div className="upload">
+                    <Popup
+                        trigger={<button className="button"> Upload </button>}
+                        modal>
+                        {close => (
+                            <div className="model">
+                                <a className="close" onClick={close}>
+                                    &times;
+                                </a>
+                                <div className="content">
+                                    {" "}
+                                    <input onChange={ this.setUploadContent } type="file"/>
+                                </div>
+                                <div className="actions">
+                                    <button className="button" onClick={() => { createAttachement(this.state.cardId); close(); }}> Send </button>
+                                    <button className="button" onClick={() => { close(); }}> Cancel </button>
+                                </div>
                             </div>
-                            <div className="actions">
-                                <button className="button" onClick={() => { createAttachement(this.state.cardId); close(); }}> Send </button>
-                                <button className="button" onClick={() => { close(); }}> Cancel </button>
+                        )}
+                    </Popup>
+                </div>
+                <div>
+                    <Popup
+                        trigger={<button className="button"> Comment </button>}
+                        modal>
+                        {close => (
+                            <div className="model">
+                                <a className="close" onClick={close}>
+                                    &times;
+                                </a>
+                                <div className="content">
+                                    {" "}
+                                    <input onChange={ this.setCommentContent } type="text" placeholder="type comment... " />
+                                </div>
+                                <div className="actions">
+                                    <button className="button" onClick={() => { createComment(this.state.cardId, this.state.commentContent, this); close(); }}> Send </button>
+                                    <button className="button" onClick={() => { close(); }}> Cancel </button>
+                                </div>
                             </div>
-                        </div>
-                    )}
-                </Popup>
-                <Popup
-                    trigger={<button className="button"> Comment </button>}
-                    modal>
-                    {close => (
-                        <div className="model">
-                            <a className="close" onClick={close}>
-                                &times;
-                            </a>
-                            <div className="content">
-                                {" "}
-                                <input onChange={ this.setCommentContent } type="text" placeholder="type comment... " />
-                            </div>
-                            <div className="actions">
-                                <button className="button" onClick={() => { createComment(this.state.cardId, this.state.commentContent, this); close(); }}> Send </button>
-                                <button className="button" onClick={() => { close(); }}> Cancel </button>
-                            </div>
-                        </div>
-                    )}
-                </Popup>
+                        )}
+                    </Popup>
+                </div>
             </Popup>
             </div>
         );
