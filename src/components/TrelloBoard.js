@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import Board from 'react-trello'
-import { makeStyles } from '@material-ui/core/styles';
+import { withStyles } from '@material-ui/core/styles';
+
 import { connect } from "react-redux";
 import { addLane, clear, changeLaneName, addCard, changeCardName, addComment, addAttachment, changeComment} from "../actions";
 import axios from 'axios';
@@ -12,7 +13,7 @@ import GetAppIcon from '@material-ui/icons/GetApp';
 import { debuglog } from 'util';
 
 
-const styles = makeStyles(theme => ({
+const styles = theme => ({
     editicon:{
         marginTop: "20px",
         marginLeft: "10px"
@@ -50,7 +51,7 @@ const styles = makeStyles(theme => ({
     attcontent: {
         display: "none",
     }
-}));
+});
 
 class TrelloBoard extends Component {
     
@@ -65,13 +66,16 @@ class TrelloBoard extends Component {
     state = {
         finish: false,
         popupOpen: false,
-        currentCard: -1,
+        currentCard: 0,
+        currentLane: 0,
         commentContent: '',
         attachmentName: '',
         attachmentContent: '',
     }
   
     render(){
+        const {classes} = this.props
+
         let lanes = {
             lanes: this.props.lanes
         }
@@ -103,13 +107,11 @@ class TrelloBoard extends Component {
             <Popup open={this.state.popupOpen}  onClose={() => onClosePopupEvent(this)}>                
                 {close => (
                     <div className="modal">
-                        <a className={styles.close} onClick={close}>&times;</a>               
+                        <a className={classes.close} onClick={close}>&times;</a>               
                         <div className="content">
                             {" "}
                             <br/>
-                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Atque, a nostrum.
-                            Dolorem, repellat quidem ut, minima sint vel eveniet quibusdam voluptates
-                            delectus doloremque, explicabo tempore dicta adipisci fugit amet dignissimos?
+                            OPIS: {lanes.lanes[this.state.currentLane].cards[this.state.currentCard].description}
                             <br />
                             Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consequatur sit
                             commodi beatae optio voluptatum sed eius cumque, delectus saepe repudiandae
@@ -126,7 +128,7 @@ class TrelloBoard extends Component {
                                 trigger={<button className="button"> Upload </button>} modal>
                                 {close => (
                                     <div className="model">
-                                        <a className={styles.close} onClick={close}>&times;</a>
+                                        <a className={classes.close} onClick={close}>&times;</a>
                                         <div className="content">{" "} <input id="files" onChange={ this.setUploadContent } type="file"/></div>
                                         <div className="actions">
                                             <button className="button" onClick={() => { createAttachement(this.state.cardId, this.state.attachmentName, document.getElementById('attachementContent').textContent, this); close(); }}> Send </button>
@@ -141,7 +143,7 @@ class TrelloBoard extends Component {
                                 trigger={<button className="button"> Comment </button>} modal>
                                 {close => (
                                     <div className="model">
-                                        <a className={styles.close} onClick={close}>&times;</a>
+                                        <a className={classes.close} onClick={close}>&times;</a>
                                         <div className="content">{" "}<input onChange={ this.setCommentContent } type="text" placeholder="type comment... " /></div>
                                         <div className="actions">
                                             <button className="button" onClick={() => { createComment(this.state.cardId, this.state.commentContent, this); close(); }}> Send </button>
@@ -158,7 +160,7 @@ class TrelloBoard extends Component {
                                 trigger={<button className="button"> <EditIcon/> </button>} modal>
                                 {close => (
                                     <div className="model">
-                                        <a className={styles.close} onClick={close}>&times;</a>
+                                        <a className={classes.close} onClick={close}>&times;</a>
                                         <div className="content">{" "}<input onChange={ this.setCommentContent } type="text" placeholder="type comment... " /></div>
                                         <div className="actions">
                                             <button className="button" onClick={() => { setComment(this.state.cardId, this.state.commentContent, this); close(); }}> Send </button>
@@ -354,9 +356,8 @@ const onDataChangeEvent = (newData) => {
 const onCardClickEvent = (cardId, metadata, laneId, that) => {
     console.log('EVENT: onCardClickEvent')
     that.setState({'popupOpen':true})
-    that.state.cardId = cardId;
-    //getComment(cardId, lineId, )
-    // this.forceUpdate();
+    that.setState({'currentCard':cardId})
+    that.setState({'currentLane':laneId})
 }
 
 const onCardAddEvent = (card, laneId, that) => { // title, description
@@ -534,7 +535,7 @@ const onClosePopupEvent = (that) =>{
 //////////////////////////////////////////////////////////////////////////////////////
 
 
-export default connect(
+export default withStyles(styles)(connect(
     mapStateToProps,
     mapDispatchToProps
-)(TrelloBoard)
+)(TrelloBoard))
