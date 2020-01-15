@@ -510,6 +510,30 @@ const createAttachement = (taskId, name, content, that) => {
         console.log(taskId + " " + name + " " + content)
         axios.post('https://trollo195.herokuapp.com/attachments/task/' + taskId, {
             name: name,
+            content: content.toString()
+        })
+            .then(function(response){
+                //tu będzie odświerzenie karty
+                //that.props.createAttachement(response.data.name, response.data.content, response.data.attachementId, cardId, laneId)
+                NotificationManager.success(taskId, 'Create Attachement Succeed!');
+            })
+            .catch(function(error){
+                NotificationManager.error('', 'Create Attachement Faild!')
+                console.log(error)
+            })
+    }
+}
+
+const createAttachementComment = (taskId, name, content, that) => {
+    if(taskId < 0)
+    {
+        console.error("taskId is incorrect");
+    }
+    else
+    {
+        console.log(taskId + " " + name + " " + content)
+        axios.post('https://trollo195.herokuapp.com/attachments/comment/' + taskId, {
+            name: name,
             content: content
         })
             .then(function(response){
