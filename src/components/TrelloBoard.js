@@ -84,7 +84,9 @@ class TrelloBoard extends Component {
         commentContent: '',
         attachmentName: '',
         attachmentContent: '',
-        time: '2017-05-24T10:30:00'
+        time: '2017-05-24T10:30:00',
+        currentCardIndex: 0,
+        currentLaneIndex: 0,
     }
   
     render(){
@@ -145,15 +147,15 @@ class TrelloBoard extends Component {
                                 />
                             </form>
                         </div>
-                        <div className={classes.header}> {lanes.lanes[0].cards[0].name}</div>
+                        <div className={classes.header}> {lanes.lanes[this.state.currentLaneIndex].cards[this.state.currentCardIndex].name}</div>
                         <div className={classes.content}>
                             {" "}
                             <br/>
                             OPIS:
                             <br />
-                            {lanes.lanes[0].cards[0].description}
+                            {lanes.lanes[this.state.currentLaneIndex].cards[this.state.currentCardIndex].description}
                         </div>
-                        {lanes.lanes[0].cards[0].attachments.map((attachment) => (
+                        {lanes.lanes[this.state.currentLaneIndex].cards[this.state.currentCardIndex].attachments.map((attachment) => (
                             <div className="attachement">
                                 {attachment.name}
                                 <button className="button" onClick={() => { downloadAttachemnt(); }}> <GetAppIcon/> </button>
@@ -191,7 +193,7 @@ class TrelloBoard extends Component {
                                 )}
                             </Popup>
                         </div>
-                        {lanes.lanes[0].cards[0].comments.map((comment) => (
+                        {lanes.lanes[this.state.currentLaneIndex].cards[this.state.currentCardIndex].comments.map((comment) => (
                             <div className="comment">
                                 {comment.content}
                                 <br/>
@@ -423,6 +425,23 @@ const onCardClickEvent = (cardId, metadata, laneId, that) => {
     that.setState({'popupOpen':true})
     that.setState({'currentCard':cardId})
     that.setState({'currentLane':laneId})
+
+    for(var i = 0; i < that.props.lanes.length; ++i)
+    {
+        if(that.props.lanes[i].id == laneId)
+        {
+            that.setState({'currentLaneIndex':i})
+            break;
+        }
+    }
+    for(var i = 0; i < that.props.lanes[that.state.currentLaneIndex].cards.length; ++i)
+    {
+        if(that.props.lanes[that.state.currentLaneIndex].cards[i].id == cardId)
+        {
+            that.setState({'currentCardIndex':i})
+            break;
+        }
+    }
 }
 
 const onCardAddEvent = (card, laneId, that) => { // title, description
