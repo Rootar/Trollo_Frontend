@@ -323,7 +323,7 @@ const loadTaskList = (boardId, that) => {
                                 .then(function(response){
                                     that.props.addCard(response.data.description, response.data.taskListId, response.data.taskId)
                                     loadCommentsList(taskList.taskListId, taskId, response.data.comments, that);
-                                    loadAttachementsList(taskList.taskListId, taskId, response.data.attachments, that);
+                                    loadAttachmentsList(taskList.taskListId, taskId, response.data.attachments, that);
                                     that.setState({'finish':true})
                                 })
                                 .catch(function(error){
@@ -350,10 +350,10 @@ const loadCommentsList = (listId, cardId, comments, that) => {
     })
 }
 
-const loadAttachementsList = (listId, cardId, attachements, that) => {
-    attachements.map((attachement) => 
-        getAttachment(cardId, listId, attachement, that)
-    )
+const loadAttachmentsList = (listId, cardId, attachments, that) => {
+    attachments.map((attachmentId) => {
+        getAttachment(cardId, listId, attachmentId.attachmentId, that)
+    })
 }
 
 /////////////////////////////////////////////////////////////////////// EVENTS
@@ -547,11 +547,11 @@ const createComment = (taskId, content, that) => {
     }
 }
 
-const getAttachment = (cardId, laneId, attachementId, that) => {
-    axios.get('https://trollo195.herokuapp.com/attachments/get/' + attachementId,{data:{}})
+const getAttachment = (cardId, laneId, attachmentId, that) => {
+    axios.get('https://trollo195.herokuapp.com/attachments/get/' + attachmentId,{data:{}})
         .then(function(response){
-            that.props.addAttachment(response.data.name, response.data.content, response.data.attachementId, cardId, laneId)
-            NotificationManager.success(attachementId, 'Get Attachment Succeed!');
+            that.props.addAttachment(response.data.name, response.data.content, response.data.attachmentId, cardId, laneId)
+            NotificationManager.success(attachmentId, 'Get Attachment Succeed!');
         })
         .catch(function(error){
             NotificationManager.error('', 'Get Attachment Faild!')

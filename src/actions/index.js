@@ -38,9 +38,9 @@ export const addComment = (content, commentId, cardId, laneId) => ({
     content
 })
 
-export const addAttachment = (name, content, attachementId, cardId, laneId) => ({
+export const addAttachment = (name, content, attachmentId, cardId, laneId) => ({
     type: 'ADD_ATTACHEMENT',
-    id: attachementId.toString(),
+    id: attachmentId.toString(),
     cardId: cardId.toString(),
     laneId: laneId.toString(),
     name,
