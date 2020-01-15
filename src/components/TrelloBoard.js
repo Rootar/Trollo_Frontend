@@ -258,12 +258,10 @@ class TrelloBoard extends Component {
             date: e.target.value + ':00'
         })
             .then(function(response){
-                that.props.changeLaneName(data.title, laneId)
-                NotificationManager.success(data.title, 'Change Lane Name Succeed!');
-
+                NotificationManager.success('temporary', 'temporary!');
             })
             .catch(function(error){
-                NotificationManager.error('', 'Change Lane Name Faild!')
+                NotificationManager.error('', 'temporary!')
 
                 console.log(error)
             })
