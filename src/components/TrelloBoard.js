@@ -255,6 +255,10 @@ const loadTaskList = (boardId, that) => {
                             axios.get('https://trollo195.herokuapp.com/tasks/get/' + taskId, {data:{}}) // dostajemy zadanie: taskId, taskListId, description
                                 .then(function(response){
                                     that.props.addCard(response.data.description, response.data.taskListId, response.data.taskId)
+                                    // console.log("comm")
+                                    // console.log(response.data.comments)
+                                    // console.log("atta")
+                                    // console.log(response.data.attachments)
                                     loadCommentsList(taskList.taskListId, taskId, response.data.comments, that);
                                     loadAttachementsList(taskList.taskListId, taskId, response.data.attachments, that);
                                     that.setState({'finish':true})
@@ -285,7 +289,7 @@ const loadCommentsList = (listId, cardId, comments, that) => {
 
 const loadAttachementsList = (listId, cardId, attachements, that) => {
     attachements.map((attachement) => 
-        getAttachment(cardId, listId, attachement.attachementId, that)
+        getAttachment(cardId, listId, attachement, that)
     )
 }
 
@@ -433,7 +437,7 @@ const onLaneScrollEvent = (requestedPage, laneId) => {
 //zawartośc karty
 const getComment = (cardId, laneId, commentId, that) => {
     console.log(cardId + " " + laneId + " " + commentId)
-    axios.get('https://trollo195.herokuapp.com/comments/get/' + commentId.toString())
+    axios.get('https://trollo195.herokuapp.com/comments/get/' + commentId.toString(),{data:{}})
         .then(function(response){
             that.props.addComment(response.data.content, response.data.commentId, cardId, laneId)
             NotificationManager.success(commentId, 'Get Comment Succeed!');
@@ -484,7 +488,7 @@ const createComment = (taskId, content, that) => {
 }
 
 const getAttachment = (cardId, laneId, attachementId, that) => {
-    axios.get('https://trollo195.herokuapp.com/attachments/get/' + attachementId)
+    axios.get('https://trollo195.herokuapp.com/attachments/get/' + attachementId,{data:{}})
         .then(function(response){
             that.props.addAttachment(response.data.name, response.data.content, response.data.attachementId, cardId, laneId)
             NotificationManager.success(attachementId, 'Get Attachment Succeed!');
