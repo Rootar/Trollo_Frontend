@@ -111,17 +111,19 @@ class TrelloBoard extends Component {
                         <div className="content">
                             {" "}
                             <br/>
-                            OPIS: {lanes.lanes[this.state.currentLane].cards[this.state.currentCard].description}
+                            OPIS: {lanes.lanes[0].cards[0].description}
                             <br />
                             Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consequatur sit
                             commodi beatae optio voluptatum sed eius cumque, delectus saepe repudiandae
                             explicabo nemo nam libero ad, doloribus, voluptas rem alias. Vitae?
                         </div>
-                        <div className="attachement">
-                            Name
-                            <button className="button" onClick={() => { downloadAttachemnt(); }}> <GetAppIcon/> </button>
-                            <button className="button" onClick={() => { removeAttachement(); }}> <DeleteIcon/> </button>
-                        </div>
+                        {lanes.lanes[0].cards[0].attachments.map((attachment) => (
+                            <div className="attachement">
+                                {attachment.name}
+                                <button className="button" onClick={() => { downloadAttachemnt(); }}> <GetAppIcon/> </button>
+                                <button className="button" onClick={() => { removeAttachement(); }}> <DeleteIcon/> </button>
+                            </div>
+                        ))}
                         <div id="attachementContent" className="attcontent"></div>
                         <div className="upload">
                             <Popup
@@ -153,23 +155,25 @@ class TrelloBoard extends Component {
                                 )}
                             </Popup>
                         </div>
-                        <div className="comment">
-                            content of comment
-                            <br/>
-                            <Popup
-                                trigger={<button className="button"> <EditIcon/> </button>} modal>
-                                {close => (
-                                    <div className="model">
-                                        <a className={classes.close} onClick={close}>&times;</a>
-                                        <div className="content">{" "}<input onChange={ this.setCommentContent } type="text" placeholder="type comment... " /></div>
-                                        <div className="actions">
-                                            <button className="button" onClick={() => { setComment(this.state.cardId, this.state.commentContent, this); close(); }}> Send </button>
-                                            <button className="button" onClick={() => { close(); }}> Cancel </button>
+                        {lanes.lanes[0].cards[0].comments.map((comment) => (
+                            <div className="comment">
+                                {comment.content}
+                                <br/>
+                                <Popup
+                                    trigger={<button className="button"> <EditIcon/> </button>} modal>
+                                    {close => (
+                                        <div className="model">
+                                            <a className={classes.close} onClick={close}>&times;</a>
+                                            <div className="content">{" "}<input onChange={ this.setCommentContent } type="text" placeholder="type comment... " /></div>
+                                            <div className="actions">
+                                                <button className="button" onClick={() => { setComment(this.state.cardId, this.state.commentContent, this); close(); }}> Send </button>
+                                                <button className="button" onClick={() => { close(); }}> Cancel </button>
+                                            </div>
                                         </div>
-                                    </div>
-                                )}
-                            </Popup>
-                        </div>
+                                    )}
+                                </Popup>
+                            </div>
+                        ))}
                     </div>
                     
                 )}
