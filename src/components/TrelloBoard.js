@@ -649,8 +649,7 @@ const removeAttachment = (attachmentId, that) => {
     }
     else
     {
-        console.log(attachmentId)
-        axios.post('https://trollo195.herokuapp.com/attachments/delete/' + attachmentId, {data:{}})
+        axios.delete('https://trollo195.herokuapp.com/attachments/' + attachmentId + '/delete', {data:{}})
             .then(function(response){
                 //tu będzie odświerzenie karty
                 //that.props.createAttachement(response.data.name, response.data.content, response.data.attachementId, cardId, laneId)
