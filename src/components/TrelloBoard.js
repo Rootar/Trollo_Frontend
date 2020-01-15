@@ -48,8 +48,11 @@ const styles = theme => ({
         background: "#ffffff",
         border: "1px solid #cfcece",
     },
-    attcontent: {
+    attContent: {
         display: "none",
+    },
+    upload:{
+
     }
 });
 
@@ -108,14 +111,13 @@ class TrelloBoard extends Component {
                 {close => (
                     <div className="modal">
                         <a className={classes.close} onClick={close}>&times;</a>               
-                        <div className="content">
+                        <div className={classes.header}> {lanes.lanes[0].cards[0].name}</div>
+                        <div className={classes.content}>
                             {" "}
                             <br/>
-                            OPIS: {lanes.lanes[0].cards[0].description}
+                            OPIS:
                             <br />
-                            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consequatur sit
-                            commodi beatae optio voluptatum sed eius cumque, delectus saepe repudiandae
-                            explicabo nemo nam libero ad, doloribus, voluptas rem alias. Vitae?
+                            {lanes.lanes[0].cards[0].description}
                         </div>
                         {lanes.lanes[0].cards[0].attachments.map((attachment) => (
                             <div className="attachement">
@@ -124,16 +126,16 @@ class TrelloBoard extends Component {
                                 <button className="button" onClick={() => { removeAttachement(); }}> <DeleteIcon/> </button>
                             </div>
                         ))}
-                        <div id="attachementContent" className="attcontent"></div>
-                        <div className="upload">
+                        <div id="attachementContent" className={classes.attContent}></div>
+                        <div className={classes.upload}>
                             <Popup
                                 trigger={<button className="button"> Upload </button>} modal>
                                 {close => (
                                     <div className="model">
                                         <a className={classes.close} onClick={close}>&times;</a>
-                                        <div className="content">{" "} <input id="files" onChange={ this.setUploadContent } type="file"/></div>
-                                        <div className="actions">
-                                            <button className="button" onClick={() => { createAttachement(this.state.cardId, this.state.attachmentName, document.getElementById('attachementContent').textContent, this); close(); }}> Send </button>
+                                        <div className={classes.content}>{" "} <input id="files" onChange={ this.setUploadContent } type="file"/></div>
+                                        <div className={classes.actions}>
+                                            <button className="button" onClick={() => { createAttachement(this.state.currentCard, this.state.attachmentName, document.getElementById('attachementContent').textContent, this); close(); }}> Send </button>
                                             <button className="button" onClick={() => { close(); }}> Cancel </button>
                                         </div>
                                     </div>
@@ -146,9 +148,9 @@ class TrelloBoard extends Component {
                                 {close => (
                                     <div className="model">
                                         <a className={classes.close} onClick={close}>&times;</a>
-                                        <div className="content">{" "}<input onChange={ this.setCommentContent } type="text" placeholder="type comment... " /></div>
-                                        <div className="actions">
-                                            <button className="button" onClick={() => { createComment(this.state.cardId, this.state.commentContent, this); close(); }}> Send </button>
+                                        <div className={classes.content}>{" "}<input onChange={ this.setCommentContent } type="text" placeholder="type comment... " /></div>
+                                        <div className={classes.actions}>
+                                            <button className="button" onClick={() => { createComment(this.state.currentCard, this.state.commentContent, this); close(); }}> Send </button>
                                             <button className="button" onClick={() => { close(); }}> Cancel </button>
                                         </div>
                                     </div>
@@ -164,8 +166,8 @@ class TrelloBoard extends Component {
                                     {close => (
                                         <div className="model">
                                             <a className={classes.close} onClick={close}>&times;</a>
-                                            <div className="content">{" "}<input onChange={ this.setCommentContent } type="text" placeholder="type comment... " /></div>
-                                            <div className="actions">
+                                            <div className={classes.content}>{" "}<input onChange={ this.setCommentContent } type="text" placeholder="type comment... " /></div>
+                                            <div className={classes.actions}>
                                                 <button className="button" onClick={() => { setComment(this.state.cardId, this.state.commentContent, this); close(); }}> Send </button>
                                                 <button className="button" onClick={() => { close(); }}> Cancel </button>
                                             </div>
@@ -506,6 +508,7 @@ const createAttachement = (taskId, name, content, that) => {
     }
     else
     {
+        console.log(taskId + " " + name + " " + content)
         axios.post('https://trollo195.herokuapp.com/attachments/task/' + taskId, {
             name: name,
             content: content
