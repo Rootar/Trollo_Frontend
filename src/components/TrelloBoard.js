@@ -158,8 +158,8 @@ class TrelloBoard extends Component {
                         {lanes.lanes[this.state.currentLaneIndex].cards[this.state.currentCardIndex].attachments.map((attachment) => (
                             <div className="attachement">
                                 {attachment.name}
-                                <button className="button" onClick={() => { downloadAttachemnt(); }}> <GetAppIcon/> </button>
-                                <button className="button" onClick={() => { removeAttachement(); }}> <DeleteIcon/> </button>
+                                <button className="button" onClick={() => { downloadAttachemnt(attachment.name, attachment.content, this); }}> <GetAppIcon/> </button>
+                                <button className="button" onClick={() => { removeAttachment(attachment.id, this); }}> <DeleteIcon/> </button>
                             </div>
                         ))}
                         <div id="attachementContent" className={classes.attContent}></div>
@@ -626,12 +626,38 @@ const createAttachementComment = (taskId, name, content, that) => {
     }
 }
 
-const downloadAttachemnt = (that) => {
+const downloadAttachemnt = (name, content, that) => {
+    var element = document.createElement('a');
+    element.setAttribute('href', 'data:text/plain;charset=utf-8,' + content);
+    element.setAttribute('download', name);
 
+    element.style.display = 'none';
+    document.body.appendChild(element);
+
+    element.click();
+
+    document.body.removeChild(element);
 }
 
-const removeAttachement = (that) => {
-
+const removeAttachment = (attachmentId, that) => {
+    if(attachmentId < 0)
+    {
+        console.error("attachmentId is incorrect");
+    }
+    else
+    {
+        console.log(attachmentId)
+        axios.post('https://trollo195.herokuapp.com/attachments/delete/' + attachmentId, {data:{}})
+            .then(function(response){
+                //tu będzie odświerzenie karty
+                //that.props.createAttachement(response.data.name, response.data.content, response.data.attachementId, cardId, laneId)
+                NotificationManager.success(attachmentId, 'Delete Attachement Succeed!');
+            })
+            .catch(function(error){
+                NotificationManager.error('', 'Delete Attachement Faild!')
+                console.log(error)
+            })
+    }
 }
 
 /////////////////////////////////////////////////////////////////////////////////////
