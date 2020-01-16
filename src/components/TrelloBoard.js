@@ -189,6 +189,13 @@ class TrelloBoard extends Component {
                                             <button className="button" onClick={() => { createComment(this.state.currentCard, this.state.commentContent, this); close(); }}> Send </button>
                                             <button className="button" onClick={() => { close(); }}> Cancel </button>
                                         </div>
+
+                                        <a className={classes.close} onClick={close}>&times;</a>
+                                        <div className={classes.content}>{" "} <input id="files" onChange={ this.setUploadContent } type="file"/></div>
+                                        <div className={classes.actions}>
+                                            <button className="button" onClick={() => { createAttachementComment(this.state.currentCard, this.state.attachmentName, document.getElementById('attachementContent').textContent, this); close(); }}> Send </button>
+                                            <button className="button" onClick={() => { close(); }}> Cancel </button>
+                                        </div>
                                     </div>
                                 )}
                             </Popup>
@@ -539,6 +546,7 @@ const onLaneScrollEvent = (requestedPage, laneId) => {
 const getComment = (cardId, laneId, commentId, that) => {
     axios.get('https://trollo195.herokuapp.com/comments/get/' + commentId.toString(),{data:{}})
         .then(function(response){
+            //console.log(response.data.attachments.length)
             that.props.addComment(response.data.content, response.data.commentId, cardId, laneId)
             NotificationManager.success('', 'Get Comment Succeed!');
         })
@@ -629,7 +637,6 @@ const createAttachementComment = (taskId, name, content, that) => {
     }
     else
     {
-        console.log(taskId + " " + name + " " + content)
         axios.post('https://trollo195.herokuapp.com/attachments/comment/' + taskId, {
             name: name,
             content: content
@@ -637,10 +644,10 @@ const createAttachementComment = (taskId, name, content, that) => {
             .then(function(response){
                 //tu będzie odświerzenie karty
                 //that.props.createAttachement(response.data.name, response.data.content, response.data.attachementId, cardId, laneId)
-                NotificationManager.success(taskId, 'Create Attachement Succeed!');
+                NotificationManager.success(taskId, 'Create Attachement In Comment Succeed!');
             })
             .catch(function(error){
-                NotificationManager.error('', 'Create Attachement Faild!')
+                NotificationManager.error('', 'Create Attachement In Comment Faild!')
                 console.log(error)
             })
     }
