@@ -121,7 +121,7 @@ class TrelloBoard extends Component {
                 onCardDelete={onCardDeleteEvent}
                 onCardMoveAcrossLanes={onCardMoveAcrossLanesEvent}
                 onLaneAdd={(params) => onLaneAddEvent(params, this.props.boardId, this)}
-                onLaneDelete={onLaneDeleteEvent}
+                onLaneDelete={(laneId) => onLaneDeleteEvent(laneId, this)}
                 onLaneUpdate={(laneId, data) => onLaneUpdateEvent(laneId, data, this)}
                 onLaneClick={onLaneClickEvent}
                 onLaneScroll={onLaneScrollEvent}
@@ -486,8 +486,25 @@ const onLaneAddEvent = (params, boardId, that) => { //title: "..."
         })
 }
 
-const onLaneDeleteEvent = (laneId) => {
+const onLaneDeleteEvent = (laneId, that) => {
     console.log('EVENT: onLaneDeleteEvent')
+    if(laneId < 0)
+    {
+        console.error("laneId is incorrect");
+    }
+    else
+    {
+        axios.delete('https://trollo195.herokuapp.com/taskLists/' + laneId + '/delete', {data:{}})
+            .then(function(response){
+                //tu będzie odświerzenie karty
+                //that.props.createAttachement(response.data.name, response.data.content, response.data.attachementId, cardId, laneId)
+                NotificationManager.success(laneId, 'Delete List Succeed!');
+            })
+            .catch(function(error){
+                NotificationManager.error('', 'Delete List Faild!')
+                console.log(error)
+            })
+    }
 }
 
 const onLaneUpdateEvent = (laneId, data, that) => { //title: "..."
